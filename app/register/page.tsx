@@ -1,22 +1,24 @@
 "use client";
-import { Box, Button, Typography } from "@mui/material";
+import {
+	Box,
+	Button,
+	FormControl,
+	IconButton,
+	InputAdornment,
+	InputLabel,
+	OutlinedInput,
+	TextField,
+	Typography,
+} from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import React from "react";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
 import Navigation from "../components/navigation";
 import { useRouter } from "next/navigation";
 
-import IconButton from "@mui/material/IconButton";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
-export default function Login() {
+export default function Register() {
 	const router = useRouter();
-
 	const [showPassword, setShowPassword] = React.useState(false);
 
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -24,6 +26,7 @@ export default function Login() {
 	const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 	};
+
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
 			<Box
@@ -32,7 +35,6 @@ export default function Login() {
 					height: 40,
 					width: "100%",
 					p: 0,
-					boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
 				}}
 			>
 				<Button
@@ -41,23 +43,22 @@ export default function Login() {
 					sx={{ bgcolor: "primary.main", color: "white" }}
 					onClick={() => router.push("/")}
 				>
-					Login
+					Register
 				</Button>
 			</Box>
 
-			<Box sx={{ p: 2, mt: 8, width: 320, display: "flex", flexDirection: "column" }}>
+			<Box sx={{ p: 0, mt: 8, width: 320, display: "flex", flexDirection: "column" }}>
 				<Typography variant="h5" component="h5">
-					Masuk
+					Register
 				</Typography>
 				<Typography variant="body1" component="p">
-					Belum punya akun?{" "}
-					<a href="/register" style={{ textDecoration: "none" }}>
-						Buat akun
-					</a>
+					Sudah punya akun? <a href="/login">Login</a>
 				</Typography>
 
 				<form action="">
-					<TextField sx={{ mt: 6 }} fullWidth label="Email" id="Email" type="email" />
+					<TextField required sx={{ mt: 6 }} fullWidth label="Name" id="name" type="text" />
+					<TextField sx={{ mt: 2 }} fullWidth label="Phone number" id="phoneNumber" type="text" />
+					<TextField required sx={{ mt: 2 }} fullWidth label="Email" id="email" type="email" />
 					<FormControl required sx={{ mt: 2, width: "100%" }} variant="outlined">
 						<InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
 						<OutlinedInput
@@ -81,10 +82,9 @@ export default function Login() {
 				</form>
 
 				<Button variant="contained" sx={{ mt: 2, width: "100%" }}>
-					Login
+					Register
 				</Button>
 			</Box>
-
 			<Navigation />
 		</Box>
 	);

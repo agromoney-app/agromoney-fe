@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import styles from "./page.module.css";
 import { Button, Container, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
