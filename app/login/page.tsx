@@ -2,7 +2,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import React, { useState } from "react";
-import Navigation from "../components/navigation";
 import { useRouter } from "next/navigation";
 
 import IconButton from "@mui/material/IconButton";
