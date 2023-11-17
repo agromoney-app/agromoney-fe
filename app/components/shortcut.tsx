@@ -13,7 +13,7 @@ const actions = [
 
 export default function Shortcut() {
 	return (
-		<Box sx={{ px: 6, transform: "translateZ(0px)", position: "fixed", zIndex: 1, bottom: 10 }}>
+		<Box sx={{ px: 6, transform: "translateZ(0px)", position: "absolute", zIndex: 1, bottom: 1 }}>
 			<SpeedDial
 				ariaLabel="SpeedDial basic example"
 				sx={{ position: "absolute", bottom: 16, right: 16 }}
