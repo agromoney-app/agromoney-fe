@@ -55,39 +55,37 @@ export default function Login() {
 					</a>
 				</Typography>
 
-				<form action="">
-					<Box
-						component="form"
-						sx={{
-							"& .MuiTextField-root": { width: "100%" },
-						}}
-						noValidate
-						autoComplete="off"
-					>
-						<TextField sx={{ mt: 6 }} fullWidth label="Email" id="Email" type="email" />
+				<Box
+					component="form"
+					sx={{
+						"& .MuiTextField-root": { width: "100%" },
+					}}
+					noValidate
+					autoComplete="off"
+				>
+					<TextField sx={{ mt: 6 }} fullWidth label="Email" id="Email" type="email" />
 
-						<FormControl required sx={{ mt: 2, width: "100%" }} variant="outlined">
-							<InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-							<OutlinedInput
-								id="outlined-adornment-password"
-								type={showPassword ? "text" : "password"}
-								endAdornment={
-									<InputAdornment position="end">
-										<IconButton
-											aria-label="toggle password visibility"
-											onClick={handleClickShowPassword}
-											onMouseDown={handleMouseDownPassword}
-											edge="end"
-										>
-											{showPassword ? <VisibilityOff /> : <Visibility />}
-										</IconButton>
-									</InputAdornment>
-								}
-								label="Password"
-							/>
-						</FormControl>
-					</Box>
-				</form>
+					<FormControl required sx={{ mt: 2, width: "100%" }} variant="outlined">
+						<InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+						<OutlinedInput
+							id="outlined-adornment-password"
+							type={showPassword ? "text" : "password"}
+							endAdornment={
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										onMouseDown={handleMouseDownPassword}
+										edge="end"
+									>
+										{showPassword ? <VisibilityOff /> : <Visibility />}
+									</IconButton>
+								</InputAdornment>
+							}
+							label="Password"
+						/>
+					</FormControl>
+				</Box>
 
 				<Button variant="contained" sx={{ mt: 2, width: "100%" }}>
 					Login
