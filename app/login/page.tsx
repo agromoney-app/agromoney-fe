@@ -93,8 +93,6 @@ export default function Login() {
 					Login
 				</Button>
 			</Box>
-
-			<Navigation />
 		</Box>
 	);
 }

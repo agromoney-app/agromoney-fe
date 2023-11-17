@@ -92,7 +92,6 @@ export default function Register() {
 					Register
 				</Button>
 			</Box>
-			<Navigation />
 		</Box>
 	);
 }
