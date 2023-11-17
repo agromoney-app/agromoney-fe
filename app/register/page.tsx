@@ -55,7 +55,14 @@ export default function Register() {
 					Sudah punya akun? <a href="/login">Login</a>
 				</Typography>
 
-				<form action="">
+				<Box
+					component="form"
+					sx={{
+						"& .MuiTextField-root": { width: "100%" },
+					}}
+					noValidate
+					autoComplete="off"
+				>
 					<TextField required sx={{ mt: 6 }} fullWidth label="Name" id="name" type="text" />
 					<TextField sx={{ mt: 2 }} fullWidth label="Phone number" id="phoneNumber" type="text" />
 					<TextField required sx={{ mt: 2 }} fullWidth label="Email" id="email" type="email" />
@@ -79,7 +86,7 @@ export default function Register() {
 							label="Password"
 						/>
 					</FormControl>
-				</form>
+				</Box>
 
 				<Button variant="contained" sx={{ mt: 2, width: "100%" }}>
 					Register
