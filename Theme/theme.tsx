@@ -10,7 +10,7 @@ const roboto = Roboto({
 const theme = createTheme({
 	palette: {
 		background: {
-			default: "#ffffff",
+			default: "#ff5f5",
 		},
 	},
 	typography: {
