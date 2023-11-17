@@ -16,6 +16,7 @@ export default function Home() {
 				height: "100vh",
 				textAlign: "center",
 				width: "320px",
+				backgroundColor: "#ffffff",
 			}}
 		>
 			<Typography variant="h4" component="h4">

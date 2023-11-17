@@ -14,7 +14,7 @@ export default function Navigation() {
 
 	return (
 		<BottomNavigation
-			sx={{ width: 320, position: "fixed", bottom: 0, backgroundColor: "Background" }}
+			sx={{ width: 320, height: 50, position: "fixed", bottom: 0, backgroundColor: "#ffffff" }}
 			value={value}
 			onChange={handleChange}
 		>
