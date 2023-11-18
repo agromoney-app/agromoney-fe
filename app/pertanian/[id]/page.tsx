@@ -12,7 +12,7 @@ import { Dayjs } from "dayjs";
 import Navigation from "@/app/components/navigation";
 import Shortcut from "@/app/components/shortcut";
 
-export default function CatatPertanian() {
+export default function UpdatePertanian() {
 	const [tanam, setTanam] = React.useState<Dayjs | null>(null);
 	const [panen, setPanen] = React.useState<Dayjs | null>(null);
 	const router = useRouter();
@@ -50,7 +50,7 @@ export default function CatatPertanian() {
 				}}
 			>
 				<Typography variant="h6" component="h6" sx={{ textAlign: "center", color: "primary.main" }}>
-					Catat Data Pertanian
+					Ubah Data Pertanian
 				</Typography>
 
 				<Box
@@ -97,6 +97,10 @@ export default function CatatPertanian() {
 
 				<Button fullWidth variant="contained" sx={{ mt: 2 }}>
 					Simpan
+				</Button>
+
+				<Button fullWidth color="error" variant="outlined" sx={{ mt: 1 }}>
+					Hapus Data
 				</Button>
 			</Box>
 
