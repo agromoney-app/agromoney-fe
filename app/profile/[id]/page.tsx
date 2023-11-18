@@ -76,7 +76,7 @@ export default function Profile() {
 					flexDirection: "column",
 				}}
 			>
-				<Box sx={{ mt: 1, width: 320, display: "flex", justifyContent: "left" }}>
+				<Box sx={{ mt: 3, width: 320, display: "flex", justifyContent: "left" }}>
 					<Typography variant="h5" component="h5">
 						Data Diri
 					</Typography>
@@ -127,81 +127,6 @@ export default function Profile() {
 							label="Password"
 						/>
 					</FormControl>
-
-					<Box sx={{ mt: 2, width: 320, display: "flex", justifyContent: "left" }}>
-						<Typography variant="h5" component="h5">
-							Domisili
-						</Typography>
-					</Box>
-
-					<FormControl fullWidth sx={{ mt: 1 }}>
-						<InputLabel id="select-label-provinsi">Provinsi</InputLabel>
-						<Select
-							labelId="select-label-provinsi"
-							id="select-label-provinsi"
-							value={provinsi}
-							label="Provinsi"
-							onChange={handleChange}
-						>
-							<MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem>
-						</Select>
-					</FormControl>
-
-					<FormControl fullWidth sx={{ mt: 1 }}>
-						<InputLabel id="select-label-kota">Kota</InputLabel>
-						<Select
-							labelId="select-label-kota"
-							id="select-label-kota"
-							value={kota}
-							label="Kota"
-							onChange={handleChange}
-						>
-							<MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem>
-						</Select>
-					</FormControl>
-
-					<FormControl fullWidth sx={{ mt: 1 }}>
-						<InputLabel id="simple-select-kecamatan">Kecamatan</InputLabel>
-						<Select
-							labelId="simple-select-kecamatan"
-							id="simple-select-kecamatan"
-							value={kecamatan}
-							label="Kecamatan"
-							onChange={handleChange}
-						>
-							<MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem>
-						</Select>
-					</FormControl>
-
-					<FormControl fullWidth sx={{ mt: 1 }}>
-						<InputLabel id="simple-select-kelurahan">Kelurahan</InputLabel>
-						<Select
-							labelId="simple-select-kelurahan"
-							id="simple-select-kelurahan"
-							value={kelurahan}
-							label="Kelurahan"
-							onChange={handleChange}
-						>
-							<MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem>
-						</Select>
-					</FormControl>
-
-					<TextField
-						sx={{ mt: 1 }}
-						fullWidth
-						id="Alamat"
-						label="Alamat"
-						placeholder="Alamat"
-						multiline
-					/>
 				</Box>
 				<Button fullWidth variant="contained" sx={{ mt: 2, mb: 10 }}>
 					Simpan
