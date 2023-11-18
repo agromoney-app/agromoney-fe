@@ -14,14 +14,22 @@ export default function Navigation() {
 
 	return (
 		<BottomNavigation
-			sx={{ width: 320, height: 50, position: "fixed", bottom: 0, backgroundColor: "#ffffff" }}
+			sx={{
+				width: 320,
+				height: 50,
+				position: "fixed",
+				bottom: 0,
+				backgroundColor: "#ffffff",
+				opacity: "100%",
+				zIndex: 1,
+			}}
 			value={value}
 			onChange={handleChange}
 		>
 			<BottomNavigationAction label="home" value="home" icon={<HomeIcon />} />
-			<BottomNavigationAction label="Grow" value="Grow" icon={<GrassIcon />} />
-			<BottomNavigationAction label="Finance" value="Finance" icon={<AttachMoneyIcon />} />
-			<BottomNavigationAction label="Weather" value="Weather" icon={<ThunderstormIcon />} />
+			<BottomNavigationAction label="Grow" value="Pertanian" icon={<GrassIcon />} />
+			<BottomNavigationAction label="Finance" value="Keuangan" icon={<AttachMoneyIcon />} />
+			<BottomNavigationAction label="Weather" value="Cuaca" icon={<ThunderstormIcon />} />
 		</BottomNavigation>
 	);
 }
