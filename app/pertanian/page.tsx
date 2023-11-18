@@ -11,11 +11,13 @@ import { useState } from "react";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Shortcut from "../components/shortcut";
+import Navigation from "../components/navigation";
 
 export default function Pertanian() {
 	const router = useRouter();
 
-	const [value, setValue] = useState("1");
+	const [value, setValue] = useState("2");
 
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setValue(newValue);
@@ -45,7 +47,7 @@ export default function Pertanian() {
 
 			<Box
 				sx={{
-					mt: 9,
+					mt: 6,
 					width: 320,
 					display: "flex",
 					justifyContent: "center",
@@ -76,6 +78,9 @@ export default function Pertanian() {
 					</TabContext>
 				</Box>
 			</Box>
+
+			<Shortcut />
+			<Navigation />
 		</Box>
 	);
 }

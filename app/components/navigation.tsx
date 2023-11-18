@@ -27,9 +27,9 @@ export default function Navigation() {
 			onChange={handleChange}
 		>
 			<BottomNavigationAction label="home" value="home" icon={<HomeIcon />} />
-			<BottomNavigationAction label="Grow" value="Pertanian" icon={<GrassIcon />} />
-			<BottomNavigationAction label="Finance" value="Keuangan" icon={<AttachMoneyIcon />} />
-			<BottomNavigationAction label="Weather" value="Cuaca" icon={<ThunderstormIcon />} />
+			<BottomNavigationAction label="Pertanian" value="Pertanian" icon={<GrassIcon />} />
+			<BottomNavigationAction label="Keuangan" value="Keuangan" icon={<AttachMoneyIcon />} />
+			<BottomNavigationAction label="Cuaca" value="Cuaca" icon={<ThunderstormIcon />} />
 		</BottomNavigation>
 	);
 }
