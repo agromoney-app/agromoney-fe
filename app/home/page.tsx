@@ -10,13 +10,11 @@ import Shortcut from "../components/shortcut";
 export default function Home() {
 	const router = useRouter();
 
-	const token = localStorage.getItem("accessToken");
-
 	async function getUser() {
 		const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/user/me`, {
 			method: "GET",
 			headers: {
-				Authorization: `Bearer ${token}`,
+				Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
 				"Content-Type": "application/json",
 			},
 		});
