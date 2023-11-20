@@ -1,14 +1,31 @@
 "use client";
 import { Box, Button, Chip, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useRouter } from "next/navigation";
 import AccountMenu from "../components/accountMenu";
 import Navigation from "../components/navigation";
 import Shortcut from "../components/shortcut";
 
-export default function Login() {
+export default function Home() {
 	const router = useRouter();
+
+	const token = localStorage.getItem("accessToken");
+
+	async function getUser() {
+		const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/user/me`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}}`,
+				"Content-Type": "application/json",
+			},
+		});
+		console.log(response);
+	}
+
+	useEffect(() => {
+		getUser();
+	}, []);
 
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
@@ -44,6 +61,7 @@ export default function Login() {
 					}}
 				>
 					<Typography variant="caption">Total Saldo</Typography>
+
 					<Typography variant="h5" component="h5">
 						Rp. 1000.000
 					</Typography>
