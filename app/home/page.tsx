@@ -1,6 +1,6 @@
 "use client";
 import { Box, Button, Chip, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useRouter } from "next/navigation";
 import AccountMenu from "../components/accountMenu";
@@ -10,22 +10,22 @@ import Shortcut from "../components/shortcut";
 export default function Home() {
 	const router = useRouter();
 
-	const token = localStorage.getItem("accessToken");
+	// const token = localStorage.getItem("accessToken");
 
-	async function getUser() {
-		const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/user/me`, {
-			method: "GET",
-			headers: {
-				Authorization: `Bearer ${token}}`,
-				"Content-Type": "application/json",
-			},
-		});
-		console.log(response);
-	}
+	// async function getUser() {
+	// 	const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/user/me`, {
+	// 		method: "GET",
+	// 		headers: {
+	// 			Authorization: `Bearer ${token}}`,
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 	});
+	// 	console.log(response);
+	// }
 
-	useEffect(() => {
-		getUser();
-	}, []);
+	// useEffect(() => {
+	// 	getUser();
+	// }, []);
 
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
