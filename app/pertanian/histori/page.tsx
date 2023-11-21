@@ -27,6 +27,7 @@ export default function Page() {
       flexDirection={"column"}
       alignItems={"center"}
       sx={{ width: "100vw", height: "100vh" }}
+      overflow={"hidden"}
     >
       {/* TOP BAR */}
       <Paper
@@ -58,6 +59,7 @@ export default function Page() {
         <Tabs value={open} onChange={handleChange} variant="fullWidth">
           <Tab value="statistik" label="Statistik" disabled />
           <Tab value="histori" label="Histori" />
+          <Tab value="pantau" label="Pantau" />
         </Tabs>
       </Stack>
 
@@ -78,31 +80,17 @@ export default function Page() {
         <Paper>
           <Stack direction={"row"} padding={2} justifyContent={"space-between"}>
             <Stack direction={"column"}>
-              <Typography variant="body1">Benih dan tanaman</Typography>
+              <Typography variant="body1">Biji minyak</Typography>
               <Typography variant="caption" color={"secondary.text"}>
-                Pengeluaran
+                Biji kacang lahan A
               </Typography>
-              <Typography variant="caption">Beli benih tanaman kopi</Typography>
-            </Stack>
-            <Stack justifyContent={"center"}>
-              <Typography variant="body1" color={"error"}>
-                -Rp45.000.000
+              <Typography color={"primary.main"} variant="caption">
+                Panen 20 November 2023
               </Typography>
             </Stack>
-          </Stack>
-        </Paper>
-
-        {/* CARD */}
-        <Paper>
-          <Stack direction={"row"} padding={2} justifyContent={"space-between"}>
-            <Stack direction={"column"}>
-              <Typography variant="body1">Benih dan tanaman</Typography>
-              <Typography variant="caption">Pengeluaran</Typography>
-              <Typography variant="caption">Beli benih tanaman kopi</Typography>
-            </Stack>
             <Stack justifyContent={"center"}>
-              <Typography variant="body1" color="success">
-                +Rp50.000.000
+              <Typography color={"primary.main"} variant="body1">
+                500 kg
               </Typography>
             </Stack>
           </Stack>
