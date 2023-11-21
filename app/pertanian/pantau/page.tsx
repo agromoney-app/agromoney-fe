@@ -14,6 +14,7 @@ import { useState } from "react";
 import Navigation from "../../components/navigation2";
 import TuneIcon from "@mui/icons-material/Tune";
 import TopBar from "@/app/components/TopBar";
+import { AccessTime } from "@mui/icons-material";
 
 export default function Page() {
   const [open, setOpen] = useState("histori");
@@ -27,6 +28,7 @@ export default function Page() {
       flexDirection={"column"}
       alignItems={"center"}
       sx={{ width: "100vw", height: "100vh" }}
+      overflow={"hidden"}
     >
       {/* TOP BAR */}
       <Paper
@@ -58,6 +60,7 @@ export default function Page() {
         <Tabs value={open} onChange={handleChange} variant="fullWidth">
           <Tab value="statistik" label="Statistik" disabled />
           <Tab value="histori" label="Histori" />
+          <Tab value="pantau" label="Pantau" />
         </Tabs>
       </Stack>
 
@@ -78,16 +81,25 @@ export default function Page() {
         <Paper>
           <Stack direction={"row"} padding={2} justifyContent={"space-between"}>
             <Stack direction={"column"}>
-              <Typography variant="body1">Benih dan tanaman</Typography>
+              <Typography variant="body1">Biji minyak</Typography>
               <Typography variant="caption" color={"secondary.text"}>
-                Pengeluaran
+                Biji kacang lahan A
               </Typography>
-              <Typography variant="caption">Beli benih tanaman kopi</Typography>
+              <Typography color={"primary.main"} variant="caption">
+                Panen 20 November 2023
+              </Typography>
             </Stack>
             <Stack justifyContent={"center"}>
-              <Typography variant="body1" color={"error"}>
-                -Rp45.000.000
-              </Typography>
+              <Button
+                color="warning"
+                startIcon={<AccessTime />}
+                variant="outlined"
+              >
+                2 Minggu
+              </Button>
+              {/* <Typography color={"primary.main"} variant="body1">
+                500 kg
+              </Typography> */}
             </Stack>
           </Stack>
         </Paper>
@@ -96,14 +108,19 @@ export default function Page() {
         <Paper>
           <Stack direction={"row"} padding={2} justifyContent={"space-between"}>
             <Stack direction={"column"}>
-              <Typography variant="body1">Benih dan tanaman</Typography>
-              <Typography variant="caption">Pengeluaran</Typography>
-              <Typography variant="caption">Beli benih tanaman kopi</Typography>
+              <Typography variant="body1">Biji minyak</Typography>
+              <Typography variant="caption">Biji kacang lahan A</Typography>
+              <Typography color={"primary.main"} variant="caption">
+                Panen 20 November 2023
+              </Typography>
             </Stack>
             <Stack justifyContent={"center"}>
-              <Typography variant="body1" color="success">
-                +Rp50.000.000
-              </Typography>
+              <Button color="primary" variant="contained">
+                Panen
+              </Button>
+              {/* <Typography color={"primary.main"} variant="body1">
+                500 kg
+              </Typography> */}
             </Stack>
           </Stack>
         </Paper>
