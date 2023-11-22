@@ -4,7 +4,6 @@ import {
 	Button,
 	Container,
 	FormControl,
-	InputAdornment,
 	InputLabel,
 	MenuItem,
 	Paper,
@@ -16,19 +15,37 @@ import {
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useRouter } from "next/navigation";
-
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import React, { useState } from "react";
-import { Dayjs } from "dayjs";
+import React, { useEffect, useState } from "react";
 import Navigation from "@/app/components/navigation2";
-import Shortcut from "@/app/components/shortcut";
-import { ToastContainer } from "react-toastify";
+
+interface Product {
+	id: number;
+	name: string;
+}
+
+interface Yield {
+	productId: number;
+	plantingTime: Date;
+	harvestTime: Date;
+	quantity: number;
+	description: string;
+}
 
 export default function CatatPertanian() {
 	const [selectedProduct, setSelectedProduct] = useState("");
+	const [products, setProducts] = useState<Product[]>([
+		{
+			id: 0,
+			name: "",
+		},
+	]);
+	const [plantingTime, setPlantingTime] = React.useState<Date | null>(null);
+	const [harvestTime, setHarvestTime] = React.useState<Date | null>(null);
+	const [description, setDescription] = useState("");
+	const [quantity, setQuantity] = useState(0);
 
 	const handleChange = (event: SelectChangeEvent) => {
 		setSelectedProduct(event.target.value as string);
@@ -36,15 +53,55 @@ export default function CatatPertanian() {
 
 	const router = useRouter();
 
-	const products = [
-		{ id: 0, value: "Bulir" },
-		{ id: 1, value: "Biji minyak" },
-		{ id: 2, value: "Buah dan sayur" },
-		{ id: 3, value: "Kacang-kacangan" },
-		{ id: 4, value: "Gula dan Pemanis" },
-		{ id: 5, value: "Kopi dan Teh" },
-		{ id: 6, value: "Rempah-rempah" },
-	];
+	async function getProducts() {
+		try {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/yields/products`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			const data = await response.json();
+			setProducts(data);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	const handlePlantingTimeChange = (selectedPlantingTime: any) => {
+		setPlantingTime(selectedPlantingTime);
+	};
+
+	const handleHarvestTimeChange = (selectedHarvestTime: any) => {
+		setHarvestTime(selectedHarvestTime);
+	};
+
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		try {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/yields`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+				},
+				body: JSON.stringify({
+					productId: products.find((product) => product.name === selectedProduct)?.id,
+					plantingTime,
+					harvestTime,
+					description,
+					quantity,
+				}),
+			});
+			console.log(response);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		getProducts();
+	}, []);
 	return (
 		<Stack
 			display={"flex"}
@@ -89,6 +146,7 @@ export default function CatatPertanian() {
 				}}
 				noValidate
 				autoComplete="off"
+				onSubmit={handleSubmit}
 			>
 				<FormControl sx={{ my: 1 }} fullWidth>
 					<InputLabel id="produkSelected">Produk</InputLabel>
@@ -98,9 +156,9 @@ export default function CatatPertanian() {
 						labelId="produkSelected"
 						label="Produk"
 					>
-						{products.map((product) => (
-							<MenuItem key={product.id} value={product.value}>
-								{product.value}
+						{products?.map((product) => (
+							<MenuItem key={product.id} value={product.name}>
+								{product.name}
 							</MenuItem>
 						))}
 					</Select>
@@ -108,7 +166,13 @@ export default function CatatPertanian() {
 
 				<Stack sx={{ my: 1 }} direction={"row"} justifyContent={"space-between"} gap={2}>
 					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<DatePicker label="Tanggal Tanam" />
+						<DatePicker
+							value={plantingTime}
+							onChange={handlePlantingTimeChange}
+							disablePast
+							format="DD/MM/YYYY"
+							label="Tanggal Tanam"
+						/>
 					</LocalizationProvider>
 					<Typography
 						variant="h6"
@@ -122,20 +186,33 @@ export default function CatatPertanian() {
 						-
 					</Typography>
 					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<DatePicker label="Tanngal Panen" />
+						<DatePicker
+							value={harvestTime}
+							onChange={handleHarvestTimeChange}
+							format="DD/MM/YYYY"
+							label="Tanngal Panen"
+							disablePast
+						/>
 					</LocalizationProvider>
 				</Stack>
 
-				<TextField sx={{ my: 1 }} fullWidth label="Catatan" id="catatan" type="text" />
+				<TextField
+					sx={{ my: 1 }}
+					fullWidth
+					label="Catatan"
+					id="catatan"
+					type="text"
+					value={description}
+					onChange={(e) => setDescription(e.target.value)}
+				/>
 				<TextField
 					sx={{ my: 1 }}
 					fullWidth
 					label="Jumlah Panen (kosongkan jika belum  panen)"
 					id="jumlah panen"
-					type="number"
-					InputProps={{
-						endAdornment: <InputAdornment position="end">kg</InputAdornment>,
-					}}
+					inputProps={{ inputMode: "numeric" }}
+					value={quantity}
+					onChange={(e) => setQuantity(Number(e.target.value))}
 				/>
 
 				<Button type="submit" variant="contained" sx={{ width: "100%", my: 1 }}>
