@@ -40,7 +40,7 @@ export default function Login() {
 		e.preventDefault();
 
 		try {
-			const response = await fetch(`${process.env.growink_be}/auth/login`, {
+			const response = await fetch("https://growink-api.up.railway.app/auth/login", {
 				method: "POST",
 				body: JSON.stringify({
 					password: password,
