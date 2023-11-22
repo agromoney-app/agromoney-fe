@@ -27,20 +27,11 @@ export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	// const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-	// 	event.preventDefault();
-	// 	const data = {
-	// 		email,
-	// 		password,
-	// 	};
-	// 	console.log(data);
-	// };
-
 	const submitLogin = async (e: SyntheticEvent) => {
 		e.preventDefault();
 
 		try {
-			const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/auth/login`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
 				method: "POST",
 				body: JSON.stringify({
 					password: password,
@@ -96,14 +87,6 @@ export default function Login() {
 			console.error("Error setting value in local storage:", error);
 		}
 	};
-
-	// const setLocalStorage = (key: string, value: string | boolean) => {
-	// 	try {
-	// 		localStorage.setItem(key, value);
-	// 	} catch (error) {
-	// 		console.error("Error setting value in local storage:", error);
-	// 	}
-	// };
 
 	return (
 		<Box

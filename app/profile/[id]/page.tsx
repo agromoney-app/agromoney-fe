@@ -84,7 +84,7 @@ export default function Profile() {
 	};
 
 	async function getUser() {
-		const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/user/me`, {
+		const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/me`, {
 			method: "GET",
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -103,7 +103,7 @@ export default function Profile() {
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		try {
-			const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/user/me`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/me`, {
 				method: "PATCH",
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

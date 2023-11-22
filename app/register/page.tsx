@@ -38,7 +38,7 @@ export default function Register() {
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		try {
-			const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/auth/register`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
