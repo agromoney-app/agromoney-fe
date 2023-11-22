@@ -3,18 +3,20 @@ import {
 	Avatar,
 	Box,
 	Button,
+	Container,
 	FormControl,
 	IconButton,
 	InputAdornment,
 	InputLabel,
 	OutlinedInput,
+	Paper,
 	TextField,
 	Typography,
 	styled,
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useRouter } from "next/navigation";
-import Navigation from "@/app/components/navigation";
+import Navigation from "@/app/components/navigation2";
 import Shortcut from "@/app/components/shortcut";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
@@ -162,48 +164,42 @@ export default function Profile() {
 
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
-			<Box
+			<Paper
+				square
 				sx={{
 					bgcolor: "primary.main",
-					height: 45,
-					width: "100%",
-					alignItems: "center",
-					p: 0,
-					boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-					zIndex: 2,
-					position: "fixed",
-				}}
-			>
-				<Button
-					variant="text"
-					startIcon={<ArrowBackIosNewIcon />}
-					sx={{ bgcolor: "primary.main", color: "white" }}
-					onClick={() => router.push("/home")}
-				>
-					Profile
-				</Button>
-			</Box>
 
-			<Box
-				sx={{
-					mt: 6,
-					width: 320,
-					display: "flex",
-					justifyContent: "center",
-					flexDirection: "column",
+					width: "100vw",
+					zIndex: 50,
 				}}
 			>
-				<ToastContainer />
-				<Box sx={{ mt: 3, width: 320, display: "flex", justifyContent: "left" }}>
-					<Typography variant="h5" component="h5">
-						Data Diri
-					</Typography>
-				</Box>
+				<Container maxWidth={"sm"} sx={{ display: "flex", justifyContent: "space-between" }}>
+					<Button
+						onClick={() => router.push("/home")}
+						startIcon={<ArrowBackIosNewIcon />}
+						variant="text"
+						sx={{ color: "#ffffff" }}
+					>
+						Profile
+					</Button>
+				</Container>
+			</Paper>
+
+			<ToastContainer />
+
+			<Container
+				maxWidth={"sm"}
+				sx={{ my: 2, p: 2, width: "100%", display: "flex", flexDirection: "column" }}
+			>
+				<Typography variant="h5" component="h5">
+					Data Diri
+				</Typography>
+
 				<Box
 					component="form"
 					sx={{
 						"& .MuiTextField-root": { width: "100%" },
-						mt: 1,
+						my: 2,
 					}}
 					noValidate
 					autoComplete="off"
@@ -216,14 +212,13 @@ export default function Profile() {
 							<Avatar sx={{ width: 80, height: 80 }} />
 						)}
 
-						<Button component="label" variant="outlined" sx={{ ml: 1 }}>
+						<Button component="label" variant="outlined" sx={{ ml: 2 }}>
 							Upload foto
 							<VisuallyHiddenInput accept="image/*" onChange={handleFileInputChange} type="file" />
 						</Button>
 					</Box>
-
 					<TextField
-						sx={{ mt: 1 }}
+						sx={{ my: 2 }}
 						fullWidth
 						label="Nama Lengkap"
 						id="Nama Lengkap"
@@ -231,6 +226,7 @@ export default function Profile() {
 						value={name}
 						onChange={(e) => setName(e.target.value)}
 					/>
+
 					<TextField
 						sx={{ mt: 1 }}
 						fullWidth
@@ -240,8 +236,9 @@ export default function Profile() {
 						value={phoneNumber}
 						onChange={(e) => setPhoneNumber(e.target.value)}
 					/>
+
 					<TextField
-						sx={{ mt: 1 }}
+						sx={{ my: 2 }}
 						fullWidth
 						label="Email"
 						id="Email"
@@ -250,7 +247,7 @@ export default function Profile() {
 						onChange={(e) => setEmail(e.target.value)}
 					/>
 
-					<FormControl required sx={{ mt: 2, width: "100%" }} variant="outlined">
+					<FormControl required sx={{ width: "100%" }} variant="outlined">
 						<InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
 						<OutlinedInput
 							id="outlined-adornment-password"
@@ -272,13 +269,12 @@ export default function Profile() {
 							label="Password"
 						/>
 					</FormControl>
-					<Button type="submit" fullWidth variant="contained" sx={{ mt: 2, mb: 10 }}>
+					<Button type="submit" fullWidth variant="contained" sx={{ my: 2 }}>
 						Simpan
 					</Button>
 				</Box>
-			</Box>
+			</Container>
 
-			<Shortcut />
 			<Navigation />
 		</Box>
 	);

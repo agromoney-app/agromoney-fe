@@ -15,18 +15,19 @@ export default function Home() {
 				justifyContent: "center",
 				height: "100vh",
 				textAlign: "center",
-				width: "320px",
+				width: "100%",
 				backgroundColor: "#ffffff",
+				p: 2,
 			}}
 		>
-			<Typography variant="h4" component="h4">
+			<Typography variant="h3" component="h3">
 				Growink
 			</Typography>
-			<Image src="/images/welcome.png" alt="logo" width={275} height={275} />
-			<Typography variant="h5" component="h5" sx={{ mt: 2, textAlign: "center" }}>
+			<Image src="/images/welcome.png" alt="logo" width={350} height={350} />
+			<Typography variant="h4" component="h4" sx={{ mt: 2, textAlign: "center" }}>
 				Selamat Datang
 			</Typography>
-			<Typography variant="caption" sx={{ mt: 2, textAlign: "center" }}>
+			<Typography variant="body1" component="p" sx={{ mt: 2, textAlign: "center" }}>
 				Di AgroMoney, Kami membantu anda mengubah lahan menjadi kesuksesan
 			</Typography>
 			<Button

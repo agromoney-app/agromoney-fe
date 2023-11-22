@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Container, Paper, Typography } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import React, { SyntheticEvent, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -106,29 +106,46 @@ export default function Login() {
 	// };
 
 	return (
-		<Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
-			<Box
+		<Box
+			sx={{
+				display: "flex",
+				alignItems: "center",
+				flexDirection: "column",
+			}}
+		>
+			<Paper
+				square
 				sx={{
 					bgcolor: "primary.main",
-					height: 40,
-					width: "100%",
-					p: 0,
-					boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+
+					width: "100vw",
+					zIndex: 50,
 				}}
 			>
-				<Button
-					variant="text"
-					startIcon={<ArrowBackIosNewIcon />}
-					sx={{ bgcolor: "primary.main", color: "white" }}
-					onClick={() => router.push("/")}
-				>
-					Login
-				</Button>
-			</Box>
+				<Container maxWidth={"sm"} sx={{ display: "flex", justifyContent: "space-between" }}>
+					<Button
+						onClick={() => router.push("/")}
+						startIcon={<ArrowBackIosNewIcon />}
+						variant="text"
+						sx={{ color: "#ffffff" }}
+					>
+						Login
+					</Button>
+				</Container>
+			</Paper>
 
 			<ToastContainer />
 
-			<Box sx={{ p: 2, mt: 8, width: 320, display: "flex", flexDirection: "column" }}>
+			<Container
+				maxWidth={"sm"}
+				sx={{
+					p: 2,
+					mt: 8,
+					width: "100%",
+					display: "flex",
+					flexDirection: "column",
+				}}
+			>
 				<Typography variant="h5" component="h5">
 					Masuk
 				</Typography>
@@ -183,7 +200,7 @@ export default function Login() {
 						Login
 					</Button>
 				</Box>
-			</Box>
+			</Container>
 		</Box>
 	);
 }

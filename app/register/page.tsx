@@ -2,11 +2,13 @@
 import {
 	Box,
 	Button,
+	Container,
 	FormControl,
 	IconButton,
 	InputAdornment,
 	InputLabel,
 	OutlinedInput,
+	Paper,
 	TextField,
 	Typography,
 } from "@mui/material";
@@ -83,27 +85,33 @@ export default function Register() {
 
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
-			<Box
+			<Paper
+				square
 				sx={{
 					bgcolor: "primary.main",
-					height: 40,
-					width: "100%",
-					p: 0,
+
+					width: "100vw",
+					zIndex: 50,
 				}}
 			>
-				<Button
-					variant="text"
-					startIcon={<ArrowBackIosNewIcon />}
-					sx={{ bgcolor: "primary.main", color: "white" }}
-					onClick={() => router.push("/")}
-				>
-					Register
-				</Button>
-			</Box>
+				<Container maxWidth={"sm"} sx={{ display: "flex", justifyContent: "space-between" }}>
+					<Button
+						onClick={() => router.push("/")}
+						startIcon={<ArrowBackIosNewIcon />}
+						variant="text"
+						sx={{ color: "#ffffff" }}
+					>
+						Register
+					</Button>
+				</Container>
+			</Paper>
 
 			<ToastContainer />
 
-			<Box sx={{ p: 0, mt: 8, width: 320, display: "flex", flexDirection: "column" }}>
+			<Container
+				maxWidth={"sm"}
+				sx={{ px: 2, mt: 8, width: "100%", display: "flex", flexDirection: "column" }}
+			>
 				<Typography variant="h5" component="h5">
 					Register
 				</Typography>
@@ -176,7 +184,7 @@ export default function Register() {
 						Register
 					</Button>
 				</Box>
-			</Box>
+			</Container>
 		</Box>
 	);
 }
