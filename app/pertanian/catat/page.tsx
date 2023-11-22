@@ -79,7 +79,7 @@ export default function CatatPertanian() {
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		try {
-			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/yields`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/yields`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
