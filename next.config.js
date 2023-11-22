@@ -2,7 +2,10 @@
 const nextConfig = {
 	reactStrictMode: true,
 	env: {
-		NEXT_PUBLIC_SERVICE_BASE: process.env.NEXT_PUBLIC_SERVICE_BASE,
+		NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+		NEXT_PUBLIC_KEY: process.env.NEXT_PUBLIC_KEY,
+		NEXT_PUBLIC_PRIVATE_KEY: process.env.NEXT_PUBLIC_PRIVATE_KEY,
+		NEXT_PUBLIC_IMAGEKIT_URL: process.env.NEXT_PUBLIC_IMAGEKIT_URL,
 	},
 	async headers() {
 		return [
