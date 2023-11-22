@@ -10,7 +10,7 @@ export default function Home() {
 	const router = useRouter();
 
 	async function getUser() {
-		const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/me`, {
+		const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/user/me`, {
 			method: "GET",
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
