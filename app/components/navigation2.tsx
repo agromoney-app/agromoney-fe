@@ -42,7 +42,7 @@ export default function Navigation() {
 					showLabel
 					label="Pertanian"
 					icon={<Grass />}
-					onClick={() => (window.location.href = "/pertanian/histori")}
+					onClick={() => (window.location.href = "/pertanian")}
 				/>
 				<BottomNavigationAction showLabel label="" disabled />
 				<BottomNavigationAction
