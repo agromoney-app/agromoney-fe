@@ -4,6 +4,7 @@ import {
 	Button,
 	Container,
 	FormControl,
+	InputAdornment,
 	InputLabel,
 	MenuItem,
 	Paper,
@@ -20,6 +21,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import React, { useEffect, useState } from "react";
 import Navigation from "@/app/components/navigation2";
+import { toast } from "react-toastify";
 
 interface Product {
 	id: number;
@@ -36,12 +38,7 @@ interface Yield {
 
 export default function CatatPertanian() {
 	const [selectedProduct, setSelectedProduct] = useState("");
-	const [products, setProducts] = useState<Product[]>([
-		{
-			id: 0,
-			name: "",
-		},
-	]);
+	const [products, setProducts] = useState<Product[]>([]);
 	const [plantingTime, setPlantingTime] = React.useState<Date | null>(null);
 	const [harvestTime, setHarvestTime] = React.useState<Date | null>(null);
 	const [description, setDescription] = useState("");
@@ -93,6 +90,33 @@ export default function CatatPertanian() {
 					quantity,
 				}),
 			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				toast.error(errorData.message, {
+					position: "top-center",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+			} else {
+				const data = await response.json();
+				toast.success(data.message, {
+					position: "top-center",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+			}
+			router.push("/pertanian");
 			console.log(response);
 		} catch (error) {
 			console.log(error);
@@ -205,14 +229,28 @@ export default function CatatPertanian() {
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
 				/>
-				<TextField
+				{/* <TextField
 					sx={{ my: 1 }}
-					fullWidth
 					label="Jumlah Panen (kosongkan jika belum  panen)"
 					id="jumlah panen"
-					inputProps={{ inputMode: "numeric" }}
 					value={quantity}
 					onChange={(e) => setQuantity(Number(e.target.value))}
+					inputProps={{
+						endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+						inputMode: "numeric",
+					}}
+				/> */}
+
+				<TextField
+					sx={{ my: 1 }}
+					label="Jumlah Panen (kosongkan jika belum  panen)"
+					id="jumlah panen"
+					value={quantity}
+					onChange={(e) => setQuantity(Number(e.target.value))}
+					InputProps={{
+						endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+						inputMode: "numeric",
+					}}
 				/>
 
 				<Button type="submit" variant="contained" sx={{ width: "100%", my: 1 }}>
