@@ -5,6 +5,7 @@ import {
 	Card,
 	CardActions,
 	CardContent,
+	Chip,
 	Container,
 	IconButton,
 	InputAdornment,
@@ -28,6 +29,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Shortcut from "../components/shortcut";
 import Navigation from "../components/navigation2";
 import TuneIcon from "@mui/icons-material/Tune";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 interface Product {
 	id: number;
@@ -95,6 +97,13 @@ export default function Pertanian() {
 	const isoDatePlats = new Date(isoDateplantsString);
 	const options = { year: "numeric", month: "long", day: "numeric" };
 	const formattedDatePlants = isoDatePlats.toLocaleDateString(
+		"id-ID",
+		options as Intl.DateTimeFormatOptions
+	);
+
+	var isoDateharvestString = yields[0]?.harvestTime;
+	const isoDateHarvest = new Date(isoDateharvestString);
+	const formattedDateHarvest = isoDateHarvest.toLocaleDateString(
 		"id-ID",
 		options as Intl.DateTimeFormatOptions
 	);
@@ -169,7 +178,7 @@ export default function Pertanian() {
 															{yieldItem.description}
 														</Typography>
 														<Typography color={"primary.main"} variant="body1">
-															{formattedDatePlants}
+															Panen {formattedDateHarvest}
 														</Typography>
 													</Stack>
 													<Stack justifyContent={"center"}>
@@ -184,7 +193,47 @@ export default function Pertanian() {
 								))}
 							</Stack>
 						</TabPanel>
-						<TabPanel value="3">Pantau</TabPanel>
+						<TabPanel value="3">
+							<Stack direction={"column"} gap={2} padding={2} width={1} height={1} maxWidth={"sm"}>
+								{yields?.map((yieldItem) => (
+									<Card key={yieldItem.id} sx={{ mt: 1, maxWidth: "sm" }}>
+										{/* <CardActions
+											onClick={() =>
+												(window.location.href = `/pertanian/update-catatan/${yieldItem.id}`)
+											}
+											sx={{ cursor: "pointer" }}
+										> */}
+										<CardContent sx={{ width: "100%" }}>
+											<Stack padding={"2"} direction={"row"} justifyContent={"space-between"}>
+												<Stack direction={"column"}>
+													<Typography variant="h6">
+														{products?.find((product) => product.id === yieldItem.productId)?.name}
+													</Typography>
+													<Typography variant="body1" color={"secondary.text"}>
+														{yieldItem.description}
+													</Typography>
+													<Typography color={"warning.main"} variant="body1">
+														Panen {formattedDateHarvest}
+													</Typography>
+												</Stack>
+												<Stack justifyContent={"center"}>
+													{/* <Typography color={"primary.main"} variant="body1">
+															{yieldItem.quantity} Kg
+														</Typography> */}
+													<Chip
+														sx={{ color: "warning.main", borderColor: "warning.main" }}
+														icon={<AccessTimeIcon color="warning" />}
+														label="2 minggu"
+														variant="outlined"
+													/>
+												</Stack>
+											</Stack>
+										</CardContent>
+										{/* </CardActions> */}
+									</Card>
+								))}
+							</Stack>
+						</TabPanel>
 					</TabContext>
 				</Box>
 			</Box>
