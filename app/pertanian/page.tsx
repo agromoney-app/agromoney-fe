@@ -149,7 +149,7 @@ export default function Pertanian() {
 						<TabPanel value="2">
 							<Stack direction={"column"} gap={2} padding={2} width={1} height={1} maxWidth={"sm"}>
 								{yields?.map((yieldItem) => (
-									<Card sx={{ mt: 1, maxWidth: "sm" }}>
+									<Card key={yieldItem.id} sx={{ mt: 1, maxWidth: "sm" }}>
 										<CardActions
 											onClick={() =>
 												(window.location.href = `/pertanian/update-catatan/${yieldItem.id}`)
