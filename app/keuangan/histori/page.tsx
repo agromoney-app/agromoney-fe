@@ -10,16 +10,34 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navigation from "../../components/navigation2";
 import TuneIcon from "@mui/icons-material/Tune";
 import TopBar from "@/app/components/TopBar";
+import axios from "axios";
 
 export default function Page() {
+  const accessToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiYjkzMDdmNy00NGRmLTRlYTEtYWNkYy04YWI4YTBkMGIzYTAiLCJpYXQiOjE3MDA3NTI2ODksImV4cCI6MTcwMDgzOTA4OX0.LaVrCwByaDqOzQKfaoaNyP0j_AqZl-FNSy5SouqqE9g";
+  const BACKEND_URL = "https://growink-api.up.railway.app/";
+
   const [open, setOpen] = useState("histori");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setOpen(newValue);
   };
+
+  const fetchHistory = async () => {
+    const response = await axios.get(BACKEND_URL + "transactions/", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    console.log(response.data);
+  };
+
+  useEffect(() => {
+    fetchHistory();
+  }, []);
   return (
     // PAGE
     <Stack
