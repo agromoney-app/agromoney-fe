@@ -26,8 +26,20 @@ export default function Navigation() {
 	};
 
 	const actions = [
-		{ icon: <AddCardIcon />, name: "Transaksi Baru" },
-		{ icon: <AddBusinessIcon />, name: "Pertanian Baru" },
+		{
+			icon: <AddCardIcon />,
+			name: "Transaksi Baru",
+			onclick: () => {
+				window.location.href = "/keuangan/catat/pengeluaran";
+			},
+		},
+		{
+			icon: <AddBusinessIcon />,
+			name: "Pertanian Baru",
+			onclick: () => {
+				window.location.href = "/pertanian/catat";
+			},
+		},
 	];
 	return (
 		<Stack width={1} maxWidth={"sm"} position={"fixed"} bottom={0}>
@@ -59,7 +71,12 @@ export default function Navigation() {
 				icon={<SpeedDialIcon />}
 			>
 				{actions.map((action) => (
-					<SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} />
+					<SpeedDialAction
+						key={action.name}
+						icon={action.icon}
+						tooltipTitle={action.name}
+						onClick={action.onclick}
+					/>
 				))}
 			</SpeedDial>
 		</Stack>
