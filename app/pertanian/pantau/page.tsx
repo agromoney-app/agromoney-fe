@@ -10,17 +10,34 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navigation from "../../components/navigation2";
 import TuneIcon from "@mui/icons-material/Tune";
 import TopBar from "@/app/components/TopBar";
 import { AccessTime } from "@mui/icons-material";
+import axios from "axios";
 
 export default function Page() {
   const [open, setOpen] = useState("histori");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setOpen(newValue);
   };
+
+  const getData = async () => {
+    const response = await axios.get(
+      "https://growink-api.up.railway.app/" + "yields",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    console.log(response.data);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     // PAGE
     <Stack
