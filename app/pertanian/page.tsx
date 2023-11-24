@@ -319,7 +319,6 @@ export default function Pertanian() {
           </TabContext>
         </Box>
       </Box>
-
       <Navigation />
     </Box>
   );
