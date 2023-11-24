@@ -131,6 +131,7 @@ export default function Pertanian() {
   );
 
   return (
+    // ALL
     <Box
       sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
     >
