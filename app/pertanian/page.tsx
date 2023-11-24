@@ -67,14 +67,6 @@ export default function Pertanian() {
     const differenceDays = differenceMs / (1000 * 60 * 60 * 24);
     return Math.floor(differenceDays);
   };
-  // const remainingTime = (time: string) => {
-  //   const timeDifference = time.getTime() - currentDate.getTime();
-  //   const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  //   const weeks = daysToWeeks(days);
-  //   if (days <= 7) {
-  //     return days;
-  //   } else return weeks;
-  // };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -202,7 +194,7 @@ export default function Pertanian() {
                 {yields?.map(
                   (yieldItem) =>
                     yieldItem.quantity > 0 && (
-                      <Card key={yieldItem.id} sx={{ mt: 1, maxWidth: "sm" }}>
+                      <Card key={yieldItem.id}>
                         <CardActions
                           onClick={() =>
                             (window.location.href = `/pertanian/update-catatan/${yieldItem.id}`)
@@ -211,12 +203,11 @@ export default function Pertanian() {
                         >
                           <CardContent sx={{ width: "100%" }}>
                             <Stack
-                              padding={"2"}
                               direction={"row"}
                               justifyContent={"space-between"}
                             >
                               <Stack direction={"column"}>
-                                <Typography variant="h6">
+                                <Typography variant="body1">
                                   {
                                     products?.find(
                                       (product) =>
@@ -225,14 +216,14 @@ export default function Pertanian() {
                                   }
                                 </Typography>
                                 <Typography
-                                  variant="body1"
+                                  variant="caption"
                                   color={"secondary.text"}
                                 >
                                   {yieldItem.description}
                                 </Typography>
                                 <Typography
                                   color={"primary.main"}
-                                  variant="body1"
+                                  variant="caption"
                                 >
                                   Panen {formattedDateHarvest}
                                 </Typography>
@@ -265,61 +256,60 @@ export default function Pertanian() {
                 {yields?.map(
                   (yieldItem) =>
                     yieldItem.quantity == 0 && (
-                      <Card key={yieldItem.id} sx={{ mt: 1, maxWidth: "sm" }}>
-                        {/* <CardActions
-											onClick={() =>
-												(window.location.href = `/pertanian/update-catatan/${yieldItem.id}`)
-											}
-											sx={{ cursor: "pointer" }}
-										> */}
-                        <CardContent sx={{ width: "100%" }}>
-                          <Stack
-                            padding={"2"}
-                            direction={"row"}
-                            justifyContent={"space-between"}
-                          >
-                            <Stack direction={"column"}>
-                              <Typography variant="h6">
-                                {
-                                  products?.find(
-                                    (product) =>
-                                      product.id === yieldItem.productId
-                                  )?.name
-                                }
-                              </Typography>
-                              <Typography
-                                variant="body1"
-                                color={"secondary.text"}
-                              >
-                                {yieldItem.description}
-                              </Typography>
-                              <Typography
-                                color={"warning.main"}
-                                variant="body1"
-                              >
-                                Panen {formattedDateHarvest}
-                              </Typography>
-                            </Stack>
-                            <Stack justifyContent={"center"}>
-                              {/* <Typography color={"primary.main"} variant="body1">
+                      <Card key={yieldItem.id}>
+                        <CardActions
+                          onClick={() =>
+                            (window.location.href = `/pertanian/update-catatan/${yieldItem.id}`)
+                          }
+                          sx={{ cursor: "pointer" }}
+                        >
+                          <CardContent sx={{ width: "100%" }}>
+                            <Stack
+                              direction={"row"}
+                              justifyContent={"space-between"}
+                            >
+                              <Stack direction={"column"}>
+                                <Typography variant="body1">
+                                  {
+                                    products?.find(
+                                      (product) =>
+                                        product.id === yieldItem.productId
+                                    )?.name
+                                  }
+                                </Typography>
+                                <Typography
+                                  variant="caption"
+                                  color={"secondary.text"}
+                                >
+                                  {yieldItem.description}
+                                </Typography>
+                                <Typography
+                                  color={"warning.main"}
+                                  variant="caption"
+                                >
+                                  Panen {formattedDateHarvest}
+                                </Typography>
+                              </Stack>
+                              <Stack justifyContent={"center"}>
+                                {/* <Typography color={"primary.main"} variant="body1">
 															{yieldItem.quantity} Kg
 														</Typography> */}
-                              <Chip
-                                sx={{
-                                  color: "warning.main",
-                                  borderColor: "warning.main",
-                                }}
-                                icon={<AccessTimeIcon color="warning" />}
-                                label={`${timeDifference(
-                                  yieldItem.harvestTime
-                                )} HARI`}
-                                // label={remainingTime(yieldItem.harvestTime)}
-                                variant="outlined"
-                              />
+                                <Chip
+                                  sx={{
+                                    color: "warning.main",
+                                    borderColor: "warning.main",
+                                  }}
+                                  icon={<AccessTimeIcon color="warning" />}
+                                  label={`${timeDifference(
+                                    yieldItem.harvestTime
+                                  )} HARI`}
+                                  // label={remainingTime(yieldItem.harvestTime)}
+                                  variant="outlined"
+                                />
+                              </Stack>
                             </Stack>
-                          </Stack>
-                        </CardContent>
-                        {/* </CardActions> */}
+                          </CardContent>
+                        </CardActions>
                       </Card>
                     )
                 )}
