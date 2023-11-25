@@ -22,6 +22,7 @@ export default function AccountMenu() {
 	};
 
 	const handleLogout = () => {
+		localStorage.removeItem("accessToken");
 		router.push("/login");
 	};
 
