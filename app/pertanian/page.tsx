@@ -133,9 +133,9 @@ export default function Pertanian() {
 							)}
 						</TabPanel>
 						<TabPanel value="3">
-							{yields?.map(
-								(yields, index) => yields.quantity > 0 && <PantauCard key={index} yields={yields} />
-							)}
+							{yields?.map((yields, index) => (
+								<PantauCard key={index} yields={yields} />
+							))}
 						</TabPanel>
 					</TabContext>
 				</Box>
