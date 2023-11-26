@@ -50,11 +50,17 @@ export default function Profile() {
 		urlEndpoint: urlEndpointEnv,
 	});
 
+	useEffect(() => {
+		getUser();
+		if (imageInput) {
+			updateImage();
+		}
+	}, [imageInput, imageUploadKey]);
+
 	const updateImage = async () => {
 		setIsUploading(true);
 		try {
 			const file = imageInput ? imageInput[0] : undefined;
-			console.log(file);
 
 			const imageKitResponse = await imageKit.upload({
 				file: file as any,
@@ -68,13 +74,11 @@ export default function Profile() {
 		setIsUploading(false);
 	};
 
-	useEffect(() => {
-		getUser();
-		updateImage();
-	}, [imageUploadKey]);
-
-	const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setImageInput(e.target.files);
+	const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files) {
+			setImageInput(e.target.files);
+			updateImage();
+		}
 	};
 
 	const [showPassword, setShowPassword] = useState(false);
@@ -93,11 +97,10 @@ export default function Profile() {
 		});
 
 		const data = await response.json();
-		setImageUrl(data.image);
+		setImageUrl(data.imageUrl);
 		setName(data.name);
 		setEmail(data.email);
 		setPhoneNumber(data.phoneNumber);
-		console.log(response);
 	}
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -110,14 +113,13 @@ export default function Profile() {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					image: imageUrl,
+					imageUrl: imageUrl,
 					name,
 					email,
 					password,
 					phoneNumber,
 				}),
 			});
-			console.log(response);
 
 			if (!response.ok) {
 				const error = await response.json();
@@ -133,7 +135,6 @@ export default function Profile() {
 				});
 			} else {
 				const data = await response.json();
-				console.log("Response data: ", data);
 				toast.success("User updated successfully!", {
 					position: "top-center",
 					autoClose: 3000,
