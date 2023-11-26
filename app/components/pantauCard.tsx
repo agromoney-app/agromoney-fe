@@ -146,6 +146,7 @@ export default function PantauCard(props: { yields: Yields }) {
 					theme: "colored",
 				});
 				setIsModalOpen(false);
+				location.reload();
 			}
 		} catch (err) {
 			console.log(err);
