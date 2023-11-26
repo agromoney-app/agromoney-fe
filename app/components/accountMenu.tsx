@@ -9,11 +9,13 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function AccountMenu() {
 	const router = useRouter();
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
+	const [imageUrl, setImageUrl] = useState("");
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -27,8 +29,25 @@ export default function AccountMenu() {
 	};
 
 	const handleProfile = () => {
-		router.push("/profile/1");
+		router.push("/profile");
 	};
+
+	async function getUser() {
+		const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/user/me`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+				"Content-Type": "application/json",
+			},
+		});
+
+		const data = await response.json();
+		setImageUrl(data.imageUrl);
+	}
+
+	useEffect(() => {
+		getUser();
+	});
 
 	return (
 		<React.Fragment>
@@ -42,7 +61,7 @@ export default function AccountMenu() {
 						aria-haspopup="true"
 						aria-expanded={open ? "true" : undefined}
 					>
-						<Avatar sx={{ width: 32, height: 32 }} />
+						<Avatar src={imageUrl} sx={{ width: 32, height: 32 }} />
 					</IconButton>
 				</Tooltip>
 			</Box>
@@ -82,7 +101,7 @@ export default function AccountMenu() {
 				anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
 			>
 				<MenuItem onClick={handleProfile}>
-					<Avatar /> Ubah Profile
+					<Avatar src={imageUrl} /> Ubah Profile
 				</MenuItem>
 				<Divider />
 				<MenuItem onClick={handleLogout}>
