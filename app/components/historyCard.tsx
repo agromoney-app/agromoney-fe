@@ -1,4 +1,5 @@
 import { Card, CardActions, CardContent, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface Product {
@@ -16,6 +17,7 @@ interface Yields {
 	quantity: number;
 }
 export default function HistoryCard(props: { yields: Yields }) {
+	const router = useRouter();
 	const [yields, setYields] = useState<Yields[]>([]);
 	const [products, setProducts] = useState<Product[]>([]);
 

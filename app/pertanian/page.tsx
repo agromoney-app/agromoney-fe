@@ -78,6 +78,10 @@ export default function Pertanian() {
 		getYields();
 	}, []);
 
+	// const handlePantau = () => {
+	// 	router.push("/pantau");
+	// };
+
 	return (
 		// ALL
 		<Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>

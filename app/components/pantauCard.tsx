@@ -132,7 +132,6 @@ export default function PantauCard(props: { yields: Yields }) {
 					progress: undefined,
 					theme: "colored",
 				});
-				route.push("/home");
 			} else {
 				const data = await response.json();
 				console.log("Response data: ", data);
@@ -146,6 +145,7 @@ export default function PantauCard(props: { yields: Yields }) {
 					progress: undefined,
 					theme: "colored",
 				});
+				setIsModalOpen(false);
 			}
 		} catch (err) {
 			console.log(err);
@@ -158,41 +158,38 @@ export default function PantauCard(props: { yields: Yields }) {
 
 	return (
 		<Stack direction={"column"} gap={2} padding={2} width={1} height={1} maxWidth={"sm"}>
-			<Card>
-				<CardContent sx={{ width: "100%" }}>
-					<Stack direction={"row"} justifyContent={"space-between"}>
-						<Stack direction={"column"}>
-							<Typography sx={{ cursor: "default" }} variant="body1">
-								{products?.find((product) => product.id === props.yields.productId)?.name}
-							</Typography>
-							<Typography sx={{ cursor: "default" }} variant="caption" color={"secondary.text"}>
-								{props.yields.description}
-							</Typography>
-							{`${timeDifference(props.yields.harvestTime)} HARI` === "0 HARI" ? (
-								<Typography sx={{ cursor: "default" }} color={"primary.main"} variant="caption">
-									Panen {readableDate}
-								</Typography>
-							) : (
-								<Typography sx={{ cursor: "default" }} color={"warning.main"} variant="caption">
-									Panen {readableDate}
-								</Typography>
-							)}
-						</Stack>
+			{props.yields.isHarvested === false ? (
+				<Card sx={{ cursor: "pointer" }}>
+					<Stack direction={"row"} justifyContent={"space-between"} padding={2}>
+						<CardContent sx={{ width: "100%" }}>
+							<CardActions
+								onClick={() => route.push(`/pertanian/update-catatan/${props.yields.id}`)}
+							>
+								<Stack direction={"column"}>
+									<Typography variant="body1">
+										{products?.find((product) => product.id === props.yields.productId)?.name}
+									</Typography>
+									<Typography variant="caption" color={"secondary.text"}>
+										{props.yields.description}
+									</Typography>
+									{`${timeDifference(props.yields.harvestTime)} HARI` === "0 HARI" ? (
+										<Typography color={"primary.main"} variant="caption">
+											Panen {readableDate}
+										</Typography>
+									) : (
+										<Typography color={"warning.main"} variant="caption">
+											Panen {readableDate}
+										</Typography>
+									)}
+								</Stack>
+							</CardActions>
+						</CardContent>
 						<Stack justifyContent={"center"}>
-							{/* <Typography color={"primary.main"} variant="body1">
-															{yieldItem.quantity} Kg
-														</Typography> */}
 							{`${timeDifference(props.yields.harvestTime)} HARI` === "0 HARI" ? (
 								<Box>
-									{props.yields.isHarvested === true ? (
-										<Button disabled onClick={handleOpenModal} variant="contained">
-											Panen
-										</Button>
-									) : (
-										<Button onClick={handleOpenModal} variant="contained">
-											Panen
-										</Button>
-									)}
+									<Button onClick={handleOpenModal} variant="contained">
+										Panen
+									</Button>
 
 									<Modal open={isModalOpen} onClose={handleCloseModal}>
 										<Box
@@ -234,7 +231,6 @@ export default function PantauCard(props: { yields: Yields }) {
 									sx={{
 										color: "warning.main",
 										borderColor: "warning.main",
-										cursor: "default",
 									}}
 									icon={<AccessTimeIcon color="warning" />}
 									label={`${timeDifference(props.yields.harvestTime)} HARI`}
@@ -244,8 +240,91 @@ export default function PantauCard(props: { yields: Yields }) {
 							)}
 						</Stack>
 					</Stack>
-				</CardContent>
-			</Card>
+				</Card>
+			) : (
+				<Card sx={{ cursor: "pointer" }}>
+					<Stack direction={"row"} justifyContent={"space-between"} padding={2}>
+						<CardContent sx={{ width: "100%" }}>
+							<CardActions
+								onClick={() => route.push(`/pertanian/update-catatan/${props.yields.id}`)}
+							>
+								<Stack direction={"column"}>
+									<Typography variant="body1">
+										{products?.find((product) => product.id === props.yields.productId)?.name}
+									</Typography>
+									<Typography variant="caption" color={"secondary.text"}>
+										{props.yields.description}
+									</Typography>
+									{`${timeDifference(props.yields.harvestTime)} HARI` === "0 HARI" ? (
+										<Typography color={"primary.main"} variant="caption">
+											Panen {readableDate}
+										</Typography>
+									) : (
+										<Typography color={"warning.main"} variant="caption">
+											Panen {readableDate}
+										</Typography>
+									)}
+								</Stack>
+							</CardActions>
+						</CardContent>
+						<Stack justifyContent={"center"}>
+							{`${timeDifference(props.yields.harvestTime)} HARI` === "0 HARI" ? (
+								<Box>
+									<Button disabled onClick={handleOpenModal} variant="contained">
+										Panen
+									</Button>
+
+									<Modal open={isModalOpen} onClose={handleCloseModal}>
+										<Box
+											component="form"
+											onSubmit={handleSubmit}
+											maxWidth={"sm"}
+											sx={{
+												position: "absolute",
+												top: "50%",
+												left: "50%",
+												transform: "translate(-50%, -50%)",
+												width: 400,
+												bgcolor: "background.paper",
+												borderRadius: "10px",
+												boxShadow: 24,
+												p: 4,
+												display: "flex",
+												flexDirection: "column",
+											}}
+										>
+											<Typography sx={{ my: 1 }} id="modal-modal-title" variant="h6" component="h2">
+												Jumlah Panen
+											</Typography>
+											<TextField
+												sx={{ my: 1 }}
+												id="outlined-basic"
+												label="Jumlah Panen"
+												variant="outlined"
+												onChange={handleChangeQuantity}
+											/>
+											<Button type="submit" sx={{ my: 1 }} variant="contained">
+												Simpan
+											</Button>
+										</Box>
+									</Modal>
+								</Box>
+							) : (
+								<Chip
+									sx={{
+										color: "warning.main",
+										borderColor: "warning.main",
+									}}
+									icon={<AccessTimeIcon color="warning" />}
+									label={`${timeDifference(props.yields.harvestTime)} HARI`}
+									// label={remainingTime(yieldItem.harvestTime)}
+									variant="outlined"
+								/>
+							)}
+						</Stack>
+					</Stack>
+				</Card>
+			)}
 		</Stack>
 	);
 }
