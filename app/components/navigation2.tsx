@@ -63,7 +63,12 @@ export default function Navigation() {
 					icon={<AttachMoney />}
 					onClick={() => (window.location.href = "/keuangan/histori")}
 				/>
-				<BottomNavigationAction showLabel label="Cuaca" icon={<WbSunnyIcon />} />
+				<BottomNavigationAction
+					showLabel
+					label="Cuaca"
+					icon={<WbSunnyIcon />}
+					onClick={() => (window.location.href = "/cuaca")}
+				/>
 			</BottomNavigation>
 			<SpeedDial
 				ariaLabel="SpeedDial basic example"
