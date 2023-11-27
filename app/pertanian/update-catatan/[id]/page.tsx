@@ -3,10 +3,16 @@ import {
   Box,
   Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   InputAdornment,
   InputLabel,
   MenuItem,
+  Modal,
   Paper,
   Select,
   SelectChangeEvent,
@@ -60,10 +66,32 @@ export default function UpdatePertanian({
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [yields, setYields] = useState<Yields[]>([]);
-
-  const handleChangePlantingTime = (date: any) => {
-    setSelectedPlantingTime(date);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
   };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  async function deleteYield() {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVICE_BASE}/yields/${params.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      router.push(`/pertanian`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function getProducts() {
     try {
@@ -359,11 +387,39 @@ export default function UpdatePertanian({
           color="error"
           fullWidth
           sx={{ my: 1 }}
+          onClick={handleDialogOpen}
         >
           Hapus Data
         </Button>
       </Box>
       <Navigation />
+
+      <Dialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Hapus data?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Apakah anda yakin ingin menghapus data ini? Data yang sudah dihapus
+            tidak dapat dikembalikan.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose}>Batal</Button>
+          <Button
+            color="error"
+            onClick={() => {
+              deleteYield();
+            }}
+            autoFocus
+          >
+            Hapus
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Stack>
   );
 }
