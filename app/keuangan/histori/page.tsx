@@ -15,6 +15,7 @@ import Navigation from "../../components/navigation2";
 import TuneIcon from "@mui/icons-material/Tune";
 import TopBar from "@/app/components/TopBar";
 import axios from "axios";
+import TransactionCard from "@/app/components/TransactionCard";
 
 export default function Page() {
   const accessToken =
@@ -26,17 +27,39 @@ export default function Page() {
     setOpen(newValue);
   };
 
-  const fetchHistory = async () => {
-    const response = await axios.get(BACKEND_URL + "transactions/", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    console.log(response.data);
-  };
+  const [transactions, setTransactions] = useState();
+
+  async function getTransactions() {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      setTransactions(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // const fetchHistory = async () => {
+  //   const response = await axios.get(BACKEND_URL + "transactions/", {
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`,
+  //     },
+  //   });
+  //   console.log(response.data);
+  // };
 
   useEffect(() => {
-    fetchHistory();
+    getTransactions();
   }, []);
   return (
     // PAGE
@@ -93,7 +116,8 @@ export default function Page() {
         </Typography>
 
         {/* CARD */}
-        <Paper>
+        <TransactionCard />
+        {/* <Paper>
           <Stack direction={"row"} padding={2} justifyContent={"space-between"}>
             <Stack direction={"column"}>
               <Typography variant="body1">Benih dan tanaman</Typography>
@@ -108,7 +132,7 @@ export default function Page() {
               </Typography>
             </Stack>
           </Stack>
-        </Paper>
+        </Paper> */}
 
         {/* CARD */}
         <Paper>
