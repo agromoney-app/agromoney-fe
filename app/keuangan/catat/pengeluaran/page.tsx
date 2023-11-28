@@ -22,7 +22,6 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import Navigation from "@/app/components/navigation2";
-import { Transaction } from "@/app/interfaces/interface";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface Categories {
@@ -30,10 +29,22 @@ interface Categories {
 	name: string;
 }
 
+interface Transaction {
+	amount: number;
+	date: Date;
+	description: string;
+	categoryId: number;
+	categories: {
+		id: number;
+		name: string;
+	};
+}
+
 export default function Page() {
 	const [active, setActive] = useState("");
 	const [selectedCategory, setSelectedCategory] = useState("");
 	const [categories, setCategories] = useState<Categories[]>([]);
+	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [description, setDescription] = useState("");
 	const [open, setOpen] = useState(false);
@@ -72,7 +83,11 @@ export default function Page() {
 					amount: amount,
 					type: "EXPENSE",
 					description: description,
-					categoryId: selectedCategory,
+					categoryId: categories.find((category) => category.name === selectedCategory)?.id,
+					categories: {
+						id: categories.find((category) => category.name === selectedCategory)?.id,
+						name: selectedCategory,
+					},
 				}),
 			});
 			const data = await response.json();
