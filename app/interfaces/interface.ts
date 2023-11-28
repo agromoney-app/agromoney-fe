@@ -1,9 +1,17 @@
+export interface TransactionCategory {
+  id: string;
+  name: string;
+}
+
 export interface Transaction {
   id: string;
   type: string;
   description: string | any;
-  transactionCategoryId: string;
   amount: number;
+  transactionTime: string;
+
+  transactionCategoryId: string;
+  transactionCategory: TransactionCategory;
 }
 
 export interface Product {
