@@ -41,7 +41,6 @@ export default function Page() {
       const data = await response.json();
 
       setTransactions(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -109,13 +108,13 @@ export default function Page() {
         height={1}
         maxWidth={"sm"}
       >
-        <Typography variant="overline" marginBottom={-2}>
-          Senin 23 November 2023
-        </Typography>
-
         {/* CARD */}
         {transactions.map((transaction: Transaction, index: number) => (
-          <TransactionCard key={index} transaction={transaction} />
+          <TransactionCard
+            key={index}
+            transaction={transaction}
+            yesterday={transactions[index - 1] || undefined}
+          />
         ))}
 
         {/* CARD */}
