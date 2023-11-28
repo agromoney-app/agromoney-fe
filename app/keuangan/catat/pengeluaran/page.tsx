@@ -6,15 +6,18 @@ import {
 	Button,
 	ButtonGroup,
 	Container,
+	FormControl,
+	InputLabel,
 	MenuItem,
 	Modal,
 	Select,
+	SelectChangeEvent,
 	Stack,
 	TextField,
 	Typography,
 } from "@mui/material";
 import TopBar from "@/app/components/TopBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -22,52 +25,86 @@ import Navigation from "@/app/components/navigation2";
 import { Transaction } from "@/app/interfaces/interface";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+interface Categories {
+	id: number;
+	name: string;
+}
+
 export default function Page() {
 	const [active, setActive] = useState("");
 	const [selectedCategory, setSelectedCategory] = useState("");
-
+	const [categories, setCategories] = useState<Categories[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [description, setDescription] = useState("");
 	const [open, setOpen] = useState(false);
-
-	const {
-		register,
-		handleSubmit,
-		watch,
-		formState: { errors },
-	} = useForm<Transaction>();
+	const [amount, setAmount] = useState(0);
+	const [date, setDate] = useState<Date | null>(null);
 
 	const handleOpenModal = () => {
 		setIsModalOpen(true);
+	};
+
+	const handleChange = (event: SelectChangeEvent) => {
+		setSelectedCategory(event.target.value as string);
 	};
 
 	const handleCloseModal = () => {
 		setIsModalOpen(false);
 	};
 
-	const [date, setDate] = useState<Date | null>();
-	const handleDateChange = (date: Date | null) => {
-		setDate(date);
+	const handleSubmitAmount = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		setAmount(parseInt(event.currentTarget.amount.value));
+		handleCloseModal();
 	};
 
-	const submit: SubmitHandler<Transaction> = (data) =>
-		console.log({ date: date, description: data.description });
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		try {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+				},
+				body: JSON.stringify({
+					transactionTime: date,
+					amount: amount,
+					type: "EXPENSE",
+					description: description,
+					categoryId: selectedCategory,
+				}),
+			});
+			const data = await response.json();
+			console.log(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-	const categories = [
-		{ id: 0, label: "Benih dan Tanaman" },
-		{ id: 1, label: "Pupuk dan Pembenah Tanah" },
-		{ id: 2, label: "Pestisida dan Herbisida" },
-		{ id: 3, label: "Peralatan dan Mesin" },
-		{ id: 4, label: "Bahan Bakar dan Energi" },
-		{ id: 5, label: "Tenaga Kerja" },
-		{ id: 6, label: "Air" },
-		{ id: 7, label: "Perbaikan dan Pemeliharaan" },
-		{ id: 8, label: "Pengemasan dan Transportasi" },
-		{ id: 9, label: "Asuransi" },
-		{ id: 10, label: "Pemasaran dan Penjualan" },
-		{ id: 11, label: "Utilitas" },
-		{ id: 12, label: "Pendidikan dan Pelatihan" },
-		{ id: 13, label: "Pajak dan Izin" },
-	];
+	async function getCategories() {
+		try {
+			const response = await fetch(
+				`${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions/categories`,
+				{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+					},
+				}
+			);
+			const data = await response.json();
+			setCategories(data);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	useEffect(() => {
+		getCategories();
+	}, []);
+
 	return (
 		// PAGE
 		<Stack
@@ -81,7 +118,46 @@ export default function Page() {
 			<TopBar />
 
 			{/* CONTENT */}
+
+			<Modal open={isModalOpen} onClose={handleCloseModal}>
+				<Box
+					maxWidth={"sm"}
+					component={"form"}
+					onSubmit={handleSubmitAmount}
+					sx={{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						width: 400,
+						bgcolor: "background.paper",
+						borderRadius: "10px",
+						boxShadow: 24,
+						p: 4,
+						display: "flex",
+						flexDirection: "column",
+					}}
+				>
+					<Typography sx={{ my: 1 }} id="modal-modal-title" variant="h6" component="h2">
+						Jumlah Pengeluaran
+					</Typography>
+					<TextField
+						sx={{ my: 1 }}
+						id="outlined-basic"
+						label="Jumlah Pengeluaran"
+						variant="outlined"
+						type="number"
+						name="amount"
+						onChange={(e) => setAmount(Number(e.target.value))}
+					/>
+					<Button type="submit" sx={{ my: 1 }} variant="contained">
+						Simpan
+					</Button>
+				</Box>
+			</Modal>
 			<Stack
+				onSubmit={handleSubmit}
+				component={"form"}
 				maxWidth={"sm"}
 				width={1}
 				height={1}
@@ -90,14 +166,6 @@ export default function Page() {
 				alignItems={"center"}
 				paddingBottom={10}
 			>
-				{/* <Stack
-          direction={"column"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          gap={2}
-          padding={2}
-          height={1}
-        > */}
 				{/* TOP */}
 				<Typography variant="h6" color={"primary.main"} marginBottom={2}>
 					Transaksi Baru
@@ -108,70 +176,45 @@ export default function Page() {
 						Pemasukan
 					</Button>
 				</ButtonGroup>
-				{/* VALUE */}
-				{/* <Box marginY={5}> */}
+
 				<Typography
 					onClick={handleOpenModal}
 					variant="h4"
 					color={"primary.main"}
 					marginTop={"auto"}
+					sx={{ cursor: "pointer" }}
 				>
-					Rp 0
+					{Number(amount).toLocaleString("id-ID", {
+						currency: "IDR",
+						style: "currency",
+					})}
 				</Typography>
 
 				{/* MODAL */}
-				<Modal open={isModalOpen} onClose={handleCloseModal}>
-					<Box
-						maxWidth={"sm"}
-						sx={{
-							position: "absolute",
-							top: "50%",
-							left: "50%",
-							transform: "translate(-50%, -50%)",
-							width: 400,
-							bgcolor: "background.paper",
-							borderRadius: "10px",
-							boxShadow: 24,
-							p: 4,
-							display: "flex",
-							flexDirection: "column",
-						}}
-					>
-						<Typography sx={{ my: 1 }} id="modal-modal-title" variant="h6" component="h2">
-							Jumlah Pengeluaran
-						</Typography>
-						<TextField
-							sx={{ my: 1 }}
-							id="outlined-basic"
-							label="Jumlah Pengeluaran"
-							variant="outlined"
-						/>
-						<Button sx={{ my: 1 }} variant="contained">
-							Simpan
-						</Button>
-					</Box>
-				</Modal>
+
 				{/* FORM */}
 				<Stack direction={"column"} width={"100%"} gap={2} marginTop={"auto"}>
 					{/* DATE */}
 
 					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<DemoContainer components={["DatePicker"]}>
-							<DatePicker
-								label="Tanggal transaksi"
-								value={date}
-								onChange={(newDate) => setDate(newDate)}
-							/>
-						</DemoContainer>
+						<DatePicker label="Tanggal transaksi" value={date} onChange={setDate} />
 					</LocalizationProvider>
 					{/* JENIS */}
-					<Select value={selectedCategory} label="Jenis pengeluaran">
-						{categories.map((category) => (
-							<MenuItem key={category.id} onClick={() => setSelectedCategory(category.label)}>
-								{category.label}
-							</MenuItem>
-						))}
-					</Select>
+					<FormControl sx={{ my: 1 }} fullWidth>
+						<InputLabel id="categorySelected">Category</InputLabel>
+						<Select
+							onChange={handleChange}
+							value={selectedCategory}
+							labelId="categorySelected"
+							label="Category"
+						>
+							{categories?.map((category) => (
+								<MenuItem key={category.id} value={category.name}>
+									{category.name}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
 
 					{/* DESKRIPSI */}
 					<TextField
@@ -179,10 +222,10 @@ export default function Page() {
 						label="Deskripsi (opsional)"
 						variant="outlined"
 						fullWidth
-						defaultValue={""}
-						{...register("description")}
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}
 					/>
-					<Button variant="contained" size="large" onClick={handleSubmit(submit)}>
+					<Button variant="contained" size="large" type="submit">
 						Simpan
 					</Button>
 				</Stack>
