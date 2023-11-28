@@ -16,18 +16,15 @@ import TuneIcon from "@mui/icons-material/Tune";
 import TopBar from "@/app/components/TopBar";
 import axios from "axios";
 import TransactionCard from "@/app/components/TransactionCard";
+import { Transaction } from "@/app/interfaces/interface";
 
 export default function Page() {
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiYjkzMDdmNy00NGRmLTRlYTEtYWNkYy04YWI4YTBkMGIzYTAiLCJpYXQiOjE3MDA3NTI2ODksImV4cCI6MTcwMDgzOTA4OX0.LaVrCwByaDqOzQKfaoaNyP0j_AqZl-FNSy5SouqqE9g";
-  const BACKEND_URL = "https://growink-api.up.railway.app/";
-
   const [open, setOpen] = useState("histori");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setOpen(newValue);
   };
 
-  const [transactions, setTransactions] = useState();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   async function getTransactions() {
     try {
@@ -44,6 +41,7 @@ export default function Page() {
       const data = await response.json();
 
       setTransactions(data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -116,26 +114,12 @@ export default function Page() {
         </Typography>
 
         {/* CARD */}
-        <TransactionCard />
-        {/* <Paper>
-          <Stack direction={"row"} padding={2} justifyContent={"space-between"}>
-            <Stack direction={"column"}>
-              <Typography variant="body1">Benih dan tanaman</Typography>
-              <Typography variant="caption" color={"secondary.text"}>
-                Pengeluaran
-              </Typography>
-              <Typography variant="caption">Beli benih tanaman kopi</Typography>
-            </Stack>
-            <Stack justifyContent={"center"}>
-              <Typography variant="body1" color={"error"}>
-                -Rp45.000.000
-              </Typography>
-            </Stack>
-          </Stack>
-        </Paper> */}
+        {transactions.map((transaction: Transaction, index: number) => (
+          <TransactionCard key={index} transaction={transaction} />
+        ))}
 
         {/* CARD */}
-        <Paper>
+        {/* <Paper>
           <Stack direction={"row"} padding={2} justifyContent={"space-between"}>
             <Stack direction={"column"}>
               <Typography variant="body1">Benih dan tanaman</Typography>
@@ -148,7 +132,7 @@ export default function Page() {
               </Typography>
             </Stack>
           </Stack>
-        </Paper>
+        </Paper> */}
       </Stack>
 
       <Navigation />
