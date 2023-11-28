@@ -83,8 +83,9 @@ export default function Page() {
 					amount: amount,
 					type: "EXPENSE",
 					description: description,
-					categoryId: categories.find((category) => category.name === selectedCategory)?.id,
-					categories: {
+					transactionCategoryId: categories.find((category) => category.name === selectedCategory)
+						?.id,
+					transactionCategory: {
 						id: categories.find((category) => category.name === selectedCategory)?.id,
 						name: selectedCategory,
 					},
