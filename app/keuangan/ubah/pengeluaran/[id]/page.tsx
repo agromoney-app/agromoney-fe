@@ -61,7 +61,7 @@ export default function Page() {
 			>
 				{/* TOP */}
 				<Typography variant="h6" color={"primary.main"} marginBottom={2}>
-					Ubah Pemasukan
+					Ubah Pengeluaran
 				</Typography>
 
 				{/* VALUE */}
