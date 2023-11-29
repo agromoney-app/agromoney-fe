@@ -20,6 +20,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Navigation from "@/app/components/navigation2";
 
 import dayjs, { Dayjs } from "dayjs";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Page({ params }: { params: { id: string } }) {
 	const [active, setActive] = useState("");
@@ -42,10 +45,26 @@ export default function Page({ params }: { params: { id: string } }) {
 		setIsModalOpen(false);
 	};
 
-	const handleSubmitAmount = (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmitAmount = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		setAmount(parseInt(event.currentTarget.amount.value));
-		handleCloseModal();
+		try {
+			const response = await fetch(
+				`${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions/${params.id}`,
+				{
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+					},
+					body: JSON.stringify({
+						amount: amount,
+					}),
+				}
+			);
+			handleCloseModal();
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	async function getTransaction() {
@@ -103,7 +122,102 @@ export default function Page({ params }: { params: { id: string } }) {
 
 	useEffect(() => {
 		setAmount(amount);
-	});
+	}, [amount]);
+
+	const updateDataPemasukan = async (id: string, data: any) => {
+		let response = null;
+		let bearer = "";
+
+		if (typeof window !== "undefined") {
+			const accessToken = localStorage.getItem("accessToken");
+			if (accessToken) {
+				bearer = `Bearer ${accessToken}`;
+
+				try {
+					const config = {
+						headers: {
+							Authorization: bearer,
+							"Content-Type": "application/json",
+						},
+					};
+
+					const updatedData = {
+						amount: data.amount,
+						description: data.description,
+						transactionTime: data.transactionTime,
+					};
+
+					const response = await axios.patch(
+						`${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions/${id}`,
+						updatedData,
+						config
+					);
+					return response.data;
+				} catch (error) {
+					console.error("Error:", error);
+					return null;
+				}
+			} else {
+				response = { error: "Access token not found" };
+			}
+		} else {
+			response = { error: "localStorage not available on the server" };
+		}
+
+		return response;
+	};
+
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		const formData = new FormData(event.currentTarget);
+		const data: any = {};
+
+		Array.from(formData.entries()).forEach(([key, value]) => {
+			data[key] = value;
+		});
+
+		data.transactionTime = selectedTransactionDate;
+		data.amout = amount;
+
+		try {
+			const res: any = await updateDataPemasukan(params.id, data);
+			console.log(res);
+			if (res) {
+				toast.success("Data updated successfully!", {
+					position: "top-center",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+			} else {
+				toast.error("Data failed to update", {
+					position: "top-center",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+			}
+		} catch {
+			toast.error("Data failed to update", {
+				position: "top-center",
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "colored",
+			});
+		}
+	};
 
 	return (
 		// PAGE
@@ -117,7 +231,7 @@ export default function Page({ params }: { params: { id: string } }) {
 			{/* TOPBAR */}
 			<TopBar />
 
-			{/* CONTENT */}
+			<ToastContainer />
 
 			<Modal open={isModalOpen} onClose={handleCloseModal}>
 				<Box
@@ -155,6 +269,9 @@ export default function Page({ params }: { params: { id: string } }) {
 					</Button>
 				</Box>
 			</Modal>
+
+			{/* CONTENT */}
+
 			<Stack
 				maxWidth={"sm"}
 				component={"form"}
@@ -164,6 +281,7 @@ export default function Page({ params }: { params: { id: string } }) {
 				padding={2}
 				alignItems={"center"}
 				paddingBottom={10}
+				onSubmit={handleSubmit}
 			>
 				{/* TOP */}
 				<Typography variant="h6" color={"primary.main"} marginBottom={2}>
