@@ -27,9 +27,11 @@ import dayjs, { Dayjs } from "dayjs";
 export default function Page() {
 	const [active, setActive] = useState("");
 	const [selectedCategory, setSelectedCategory] = useState("");
-
+	const [date, setDate] = useState<Date | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [open, setOpen] = useState(false);
+	const [amount, setAmount] = useState(0);
+	const [description, setDescription] = useState("");
 
 	const handleOpenModal = () => {
 		setIsModalOpen(true);
@@ -39,20 +41,34 @@ export default function Page() {
 		setIsModalOpen(false);
 	};
 
-	const {
-		register,
-		handleSubmit,
-		watch,
-		formState: { errors },
-	} = useForm<Transaction>();
-
-	const [date, setDate] = useState<Date | null>();
-	const handleDateChange = (date: Date | null) => {
-		setDate(date);
+	const handleSubmitAmount = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		setAmount(parseInt(event.currentTarget.amount.value));
+		handleCloseModal();
 	};
 
-	const submit: SubmitHandler<Transaction> = (data) =>
-		console.log({ date: date, description: data.description });
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		try {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+				},
+				body: JSON.stringify({
+					transactionTime: date,
+					amount: amount,
+					type: "INCOME",
+					description: description,
+				}),
+			});
+			const data = await response.json();
+			console.log(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		// PAGE
@@ -67,8 +83,47 @@ export default function Page() {
 			<TopBar />
 
 			{/* CONTENT */}
+
+			<Modal open={isModalOpen} onClose={handleCloseModal}>
+				<Box
+					maxWidth={"sm"}
+					component={"form"}
+					onSubmit={handleSubmitAmount}
+					sx={{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						width: 400,
+						bgcolor: "background.paper",
+						borderRadius: "10px",
+						boxShadow: 24,
+						p: 4,
+						display: "flex",
+						flexDirection: "column",
+					}}
+				>
+					<Typography sx={{ my: 1 }} id="modal-modal-title" variant="h6" component="h2">
+						Jumlah Pengeluaran
+					</Typography>
+					<TextField
+						sx={{ my: 1 }}
+						id="outlined-basic"
+						label="Jumlah Pengeluaran"
+						variant="outlined"
+						type="number"
+						name="amount"
+						onChange={(e) => setAmount(Number(e.target.value))}
+					/>
+					<Button type="submit" sx={{ my: 1 }} variant="contained">
+						Simpan
+					</Button>
+				</Box>
+			</Modal>
 			<Stack
 				maxWidth={"sm"}
+				onSubmit={handleSubmit}
+				component={"form"}
 				width={1}
 				height={1}
 				bgcolor={"#FFFFFF"}
@@ -76,14 +131,6 @@ export default function Page() {
 				alignItems={"center"}
 				paddingBottom={10}
 			>
-				{/* <Stack
-          direction={"column"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          gap={2}
-          padding={2}
-          height={1}
-        > */}
 				{/* TOP */}
 				<Typography variant="h6" color={"primary.main"} marginBottom={2}>
 					Transaksi Baru
@@ -96,60 +143,35 @@ export default function Page() {
 				</ButtonGroup>
 
 				{/* VALUE */}
-				<Typography
+				{/* <Typography
 					onClick={handleOpenModal}
 					variant="h4"
 					color={"primary.main"}
 					marginTop={"auto"}
 				>
 					Rp 0
+				</Typography> */}
+
+				<Typography
+					onClick={handleOpenModal}
+					variant="h4"
+					color={"primary.main"}
+					marginTop={"auto"}
+					sx={{ cursor: "pointer" }}
+				>
+					{Number(amount).toLocaleString("id-ID", {
+						currency: "IDR",
+						style: "currency",
+					})}
 				</Typography>
 
 				{/* MODAL */}
-				<Modal open={isModalOpen} onClose={handleCloseModal}>
-					<Box
-						maxWidth={"sm"}
-						sx={{
-							position: "absolute",
-							top: "50%",
-							left: "50%",
-							transform: "translate(-50%, -50%)",
-							width: 400,
-							bgcolor: "background.paper",
-							borderRadius: "10px",
-							boxShadow: 24,
-							p: 4,
-							display: "flex",
-							flexDirection: "column",
-						}}
-					>
-						<Typography sx={{ my: 1 }} id="modal-modal-title" variant="h6" component="h2">
-							Jumlah Pemasukan
-						</Typography>
-						<TextField
-							sx={{ my: 1 }}
-							id="outlined-basic"
-							label="Jumlah Pemasukan"
-							variant="outlined"
-						/>
-						<Button sx={{ my: 1 }} variant="contained">
-							Simpan
-						</Button>
-					</Box>
-				</Modal>
 
 				{/* FORM */}
 				<Stack direction={"column"} width={"100%"} gap={2} marginTop={"auto"}>
 					{/* DATE */}
 					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<DemoContainer components={["DatePicker"]}>
-							<DatePicker
-								label="Tanggal transaksi"
-								value={date}
-								onChange={(newDate) => setDate(newDate)}
-								format="DD/MM/YYYY"
-							/>
-						</DemoContainer>
+						<DatePicker label="Tanggal transaksi" value={date} onChange={setDate} />
 					</LocalizationProvider>
 
 					{/* DESKRIPSI */}
@@ -158,10 +180,10 @@ export default function Page() {
 						label="Deskripsi (opsional)"
 						variant="outlined"
 						fullWidth
-						defaultValue={""}
-						{...register("description")}
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}
 					/>
-					<Button variant="contained" size="large" onClick={handleSubmit(submit)}>
+					<Button variant="contained" size="large" type="submit">
 						Simpan
 					</Button>
 				</Stack>
