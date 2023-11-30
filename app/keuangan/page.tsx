@@ -17,25 +17,24 @@ import TuneIcon from "@mui/icons-material/Tune";
 import { PieChart } from "@mui/x-charts/PieChart";
 
 import TransactionCard from "@/app/components/TransactionCard";
-import { Transaction } from "@/app/interfaces/interface";
+import { Transaction, TransactionCategory } from "@/app/interfaces/interface";
 import { useDrawingArea } from "@mui/x-charts/hooks";
 import { styled } from "@mui/material/styles";
 import { FiberManualRecord } from "@mui/icons-material";
-
-interface Categories {
-  id: number;
-  name: string;
-}
+import FilterKeuangan from "../components/FilterKeuangan";
 
 export default function Page() {
   const [open, setOpen] = useState("histori");
 
   // TRANSACTIONS
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState<TransactionCategory[]>([]);
+
   async function getTransactions() {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions`,
+        `${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions?/type=Pemasukan`,
         {
           method: "GET",
           headers: {
@@ -45,7 +44,25 @@ export default function Page() {
         }
       );
       const data = await response.json();
+      setTransactions(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  async function getFilteredTransaction() {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions?/type=${selectedCategory}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const data = await response.json();
       setTransactions(data);
     } catch (error) {
       console.log(error);
@@ -57,7 +74,6 @@ export default function Page() {
   };
 
   //   STATISTICS
-  const [categories, setCategories] = useState<Categories[]>([]);
   const colors = [
     "#8dd3c7",
     "#ffffb3",
@@ -102,8 +118,9 @@ export default function Page() {
         }
       );
       const data = await response.json();
-      setCategories(data);
       console.log(data);
+
+      setCategories(data);
     } catch (error) {
       console.log(error);
     }
@@ -136,7 +153,6 @@ export default function Page() {
       display={"flex"}
       flexDirection={"column"}
       alignItems={"center"}
-      height={1}
       sx={{ width: "100vw", height: "100vh" }}
     >
       {/* TOP BAR */}
@@ -155,12 +171,12 @@ export default function Page() {
           <Button variant="text" sx={{ color: "#ffffff" }}>
             Keuangan
           </Button>
-          <IconButton
-            sx={{ color: "#ffffff" }}
-            onClick={() => (window.location.href = "/keuangan/histori/filter")}
-          >
-            <TuneIcon />
-          </IconButton>
+          <FilterKeuangan
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            getFilteredTransaction={getFilteredTransaction}
+          />
         </Container>
       </Paper>
 
@@ -173,6 +189,7 @@ export default function Page() {
       </Stack>
 
       {/*  CONTENT */}
+      <Typography>{selectedCategory}</Typography>
       {open == "histori" ? (
         <Stack
           direction={"column"}
