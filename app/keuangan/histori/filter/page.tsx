@@ -1,6 +1,7 @@
 "use client";
 
 import {
+	Box,
 	Button,
 	Container,
 	FormControl,
@@ -52,24 +53,11 @@ export default function Page() {
 		getTransactions();
 	}, []);
 
-	async function getfilter() {
-		const response = await fetch(
-			`${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions/type=${typeTransaction}`,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-				},
-			}
-		);
-	}
-
-	function handleSearch(event: FormEvent<HTMLFormElement>): void {
+	async function handleSearch(event: FormEvent<HTMLFormElement>): Promise<void> {
 		event.preventDefault();
 
 		try {
-			const response = fetch(
+			const response = await fetch(
 				`${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions?type=${typeTransaction}`,
 				{
 					method: "GET",
@@ -79,6 +67,9 @@ export default function Page() {
 					},
 				}
 			);
+			const data = await response.json();
+			setTransactions(data);
+
 			console.log(response);
 		} catch (error) {
 			console.log(error);
@@ -94,7 +85,7 @@ export default function Page() {
 			display={"flex"}
 			flexDirection={"column"}
 			alignItems={"center"}
-			sx={{ width: "100vw", height: "100vh" }}
+			sx={{ width: "100%", height: "100%" }}
 		>
 			{/* TOP BAR */}
 			<Paper
@@ -131,6 +122,9 @@ export default function Page() {
 				width={1}
 				height={1}
 				maxWidth={"sm"}
+				sx={{
+					width: "100%",
+				}}
 				onSubmit={handleSearch}
 			>
 				<Typography variant="h6">Cari transaksi</Typography>
@@ -168,14 +162,13 @@ export default function Page() {
 					Search
 				</Button>
 			</Stack>
-
-			{/* LIST TRANSACTION */}
-
 			<Stack gap={2} padding={2} width={1} maxWidth={"sm"}>
 				{filteredTransactions?.map((transaction) => (
 					<TransactionCard key={transaction.id} transaction={transaction} />
 				))}
 			</Stack>
+
+			{/* LIST TRANSACTION */}
 
 			<Navigation />
 		</Stack>
