@@ -110,7 +110,7 @@ export default function Page({ params }: { params: { id: string } }) {
 			const dt = convertDateDes(data.transactionTime);
 			setTransactionTime(dt);
 			setSelectedTransactionDate(dayjs(dt));
-			setSelectedCategory(data.transactionCategory.name);
+			setSelectedCategory(data.transactionCategoryId);
 		} catch (error) {
 			console.log(error);
 		}
@@ -183,6 +183,7 @@ export default function Page({ params }: { params: { id: string } }) {
 						amount: data.amount,
 						description: data.description,
 						transactionTime: data.transactionTime,
+						transactionCategoryId: data.transactionCategoryId,
 					};
 
 					const response = await axios.patch(
@@ -215,10 +216,10 @@ export default function Page({ params }: { params: { id: string } }) {
 		});
 
 		data.transactionTime = selectedTransactionDate;
+		data.transactionCategoryId = selectedCategory;
 
 		try {
 			const res: any = await updateDataPengeluaran(params.id, data);
-			console.log(res);
 			if (res) {
 				toast.success("Data updated successfully!", {
 					position: "top-center",
@@ -361,7 +362,7 @@ export default function Page({ params }: { params: { id: string } }) {
 							label="Category"
 						>
 							{transactionCategories?.map((transactionCategory) => (
-								<MenuItem key={transactionCategory.id} value={transactionCategory.name}>
+								<MenuItem key={transactionCategory.id} value={transactionCategory.id}>
 									{transactionCategory.name}
 								</MenuItem>
 							))}
