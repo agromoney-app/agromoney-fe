@@ -61,7 +61,7 @@ export default function Navigation() {
 					showLabel
 					label="Keuangan"
 					icon={<AttachMoney />}
-					onClick={() => (window.location.href = "/keuangan/histori")}
+					onClick={() => (window.location.href = "/keuangan")}
 				/>
 				<BottomNavigationAction
 					showLabel
