@@ -244,6 +244,9 @@ export default function UpdatePertanian({ params }: { params: { id: string } }) 
 					progress: undefined,
 					theme: "colored",
 				});
+				setTimeout(() => {
+					router.push("/pertanian");
+				}, 4000);
 			} else {
 				toast.error("Data failed to update", {
 					position: "top-center",

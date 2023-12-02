@@ -145,6 +145,9 @@ export default function Profile() {
 					progress: undefined,
 					theme: "colored",
 				});
+				setTimeout(() => {
+					router.push("/home");
+				}, 4000);
 			}
 		} catch (err) {
 			console.log(err);

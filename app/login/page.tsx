@@ -71,7 +71,9 @@ export default function Login() {
 					progress: undefined,
 					theme: "colored",
 				});
-				router.push("/home");
+				setTimeout(() => {
+					router.push("/home");
+				}, 4000);
 
 				// alert('User logged in successfully!');
 			}

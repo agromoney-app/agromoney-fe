@@ -77,6 +77,9 @@ export default function Register() {
 					progress: undefined,
 					theme: "colored",
 				});
+				setTimeout(() => {
+					router.push("/login");
+				}, 4000);
 			}
 		} catch (err) {
 			console.log(err);

@@ -23,6 +23,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import Navigation from "@/app/components/navigation2";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 interface Categories {
 	id: number;
@@ -68,6 +71,7 @@ export default function Page() {
 		setAmount(parseInt(event.currentTarget.amount.value));
 		handleCloseModal();
 	};
+	const router = useRouter();
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -92,7 +96,32 @@ export default function Page() {
 				}),
 			});
 			const data = await response.json();
-			console.log(data);
+			if (response.ok) {
+				toast.success("Transaksi ditambahkan!", {
+					position: "top-center",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+				setTimeout(() => {
+					router.push("/keuangan");
+				}, 4000);
+			} else {
+				toast.error(data.message, {
+					position: "top-center",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -132,6 +161,8 @@ export default function Page() {
 		>
 			{/* TOPBAR */}
 			<TopBar />
+
+			<ToastContainer />
 
 			{/* CONTENT */}
 
