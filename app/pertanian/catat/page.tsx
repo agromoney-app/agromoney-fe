@@ -105,7 +105,7 @@ export default function CatatPertanian() {
 				});
 			} else {
 				const data = await response.json();
-				toast.success(data.message, {
+				toast.success("Catatan ditambahkan!", {
 					position: "top-center",
 					autoClose: 3000,
 					hideProgressBar: false,
@@ -117,7 +117,9 @@ export default function CatatPertanian() {
 				});
 			}
 			console.log(response);
-			router.push("/pertanian");
+			setTimeout(() => {
+				router.push("/pertanian");
+			}, 4000);
 		} catch (error) {
 			console.log(error);
 		}

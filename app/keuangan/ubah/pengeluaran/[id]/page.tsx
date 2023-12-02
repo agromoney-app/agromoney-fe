@@ -26,6 +26,7 @@ import { ToastContainer, toast } from "react-toastify";
 import dayjs, { Dayjs } from "dayjs";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 interface TransactionCategory {
 	id: number;
@@ -54,6 +55,8 @@ export default function Page({ params }: { params: { id: string } }) {
 	const [selectedTransactionTime, setSelectedTransactionTime] = useState(new Date(transactionTime));
 	const [selectedTransactionDate, setSelectedTransactionDate] = useState<Dayjs | null>(null);
 	const [transactionCategoryId, setTransactionCategoryId] = useState("");
+
+	const router = useRouter();
 
 	const handleOpenModal = () => {
 		setIsModalOpen(true);
@@ -231,6 +234,9 @@ export default function Page({ params }: { params: { id: string } }) {
 					progress: undefined,
 					theme: "colored",
 				});
+				setTimeout(() => {
+					router.push("/keuangan");
+				}, 4000);
 			} else {
 				toast.error("Data failed to update", {
 					position: "top-center",
