@@ -25,6 +25,7 @@
 - [UI UX Design](#ui-ux-design)
 - [Technologies Used](#technologies-used)
 - [Features](#features)
+- [Data Model](#data-model)
 - [Installation](#installation)
 - [Live Demo](#live-demo)
 - [API Documentation](#api-documentation)
@@ -61,6 +62,12 @@ View Design UI/UX with : [Figma](https://www.figma.com/file/qieKxgAPkKlZK9WyXhQy
 - users can see the total balance, total income, total expense of the last transaction and the last agricultural record
 - Users can create agricultural records, update agricultural records, view agricultural record history, monitor agriculture, and view agricultural statistics
 - Users can create financial records, update financial records, view financial history and view financial statistics
+
+## Data Model
+
+Our data model is designed to ensure smooth interactions and seamless data management. From users and artists to events and categories, everything is well-connected for a holistic user experience.
+
+![Data Model](/assets/schema.png)
 
 ## Installation
 
