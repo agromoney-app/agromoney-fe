@@ -143,7 +143,7 @@ export default function Home() {
 		calculateExpense(transactions);
 		calculateIncome(transactions);
 		calculateBalance(totalIncome, totalExpense);
-	}, [transactions]);
+	}, [totalIncome, totalExpense, transactions]);
 
 	return (
 		<Container
