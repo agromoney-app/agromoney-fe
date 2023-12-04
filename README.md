@@ -67,7 +67,7 @@ View Design UI/UX with : [Figma](https://www.figma.com/file/qieKxgAPkKlZK9WyXhQy
 
 Our data model is designed to ensure smooth interactions and seamless data management. From users and artists to events and categories, everything is well-connected for a holistic user experience.
 
-![Data Model](/assets/schema.png)
+![Data Model](/public/images/schema.png)
 
 ## Installation
 
