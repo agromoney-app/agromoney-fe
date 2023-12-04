@@ -6,6 +6,11 @@ import {
 	Button,
 	ButtonGroup,
 	Container,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
 	MenuItem,
 	Modal,
 	Select,
@@ -33,6 +38,7 @@ export default function Page({ params }: { params: { id: string } }) {
 	const [transactionTime, setTransactionTime] = useState("");
 	const [selectedTransactionTime, setSelectedTransactionTime] = useState(new Date(transactionTime));
 	const [selectedTransactionDate, setSelectedTransactionDate] = useState<Dayjs | null>(null);
+	const [dialogOpen, setDialogOpen] = useState(false);
 	const router = useRouter();
 
 	const handleOpenModal = () => {
@@ -45,6 +51,10 @@ export default function Page({ params }: { params: { id: string } }) {
 
 	const handleCloseModal = () => {
 		setIsModalOpen(false);
+	};
+
+	const handleDialogClose = () => {
+		setDialogOpen(false);
 	};
 
 	const handleSubmitAmount = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -94,6 +104,10 @@ export default function Page({ params }: { params: { id: string } }) {
 			console.log(error);
 		}
 	}
+
+	const handleDialogOpen = () => {
+		setDialogOpen(true);
+	};
 
 	const convertDateDes = (isoDate: string) => {
 		const date = new Date(isoDate);
@@ -224,6 +238,49 @@ export default function Page({ params }: { params: { id: string } }) {
 		}
 	};
 
+	async function deleteTransaction() {
+		try {
+			const response = await fetch(
+				`${process.env.NEXT_PUBLIC_SERVICE_BASE}/transactions/${params.id}`,
+				{
+					method: "DELETE",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+					},
+				}
+			);
+			if (response.ok) {
+				toast.success("Data deleted successfully!", {
+					position: "top-center",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+			} else {
+				toast.error("Data failed to delete", {
+					position: "top-center",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+			}
+			setTimeout(() => {
+				router.push("/keuangan");
+			}, 4000);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	return (
 		// PAGE
 		<Stack
@@ -335,10 +392,40 @@ export default function Page({ params }: { params: { id: string } }) {
 					<Button variant="contained" size="large" type="submit">
 						Simpan
 					</Button>
+					<Button
+						onClick={handleDialogOpen}
+						type="button"
+						variant="outlined"
+						color="error"
+						fullWidth
+					>
+						Hapus Data
+					</Button>
 				</Stack>
 				{/* </Stack> */}
 			</Stack>
 			<Navigation />
+
+			<Dialog
+				open={dialogOpen}
+				onClose={handleDialogClose}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">{"Hapus data?"}</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						Apakah anda yakin ingin menghapus data ini? Data yang sudah dihapus tidak dapat
+						dikembalikan.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleDialogClose}>Batal</Button>
+					<Button onClick={deleteTransaction} color="error" autoFocus>
+						Hapus
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</Stack>
 	);
 }
