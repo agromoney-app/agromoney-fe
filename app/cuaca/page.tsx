@@ -227,6 +227,7 @@ export default function Cuaca() {
                     display: "flex",
                     padding: 2,
                     justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
                   <Box display={"flex"} flexDirection={"column"}>
