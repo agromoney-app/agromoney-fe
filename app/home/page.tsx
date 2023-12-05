@@ -126,11 +126,23 @@ export default function Home() {
 		console.log(totalIncome);
 	};
 
-	const calculateBalance = (totalIncome: number, totalExpense: number) => {
-		const totalBalance = totalIncome - totalExpense;
+	// const calculateBalance = (totalIncome: number, totalExpense: number) => {
+	// 	const totalBalance = totalIncome - totalExpense;
 
+	// 	setTotalBalance(totalBalance);
+	// };
+
+	const calculateBalance = () => {
+		let total = 0;
+		transactions.forEach((transactionData) => {
+			total += transactionData.type == "INCOME" ? transactionData.amount : -transactionData.amount;
+		});
 		setTotalBalance(totalBalance);
 	};
+
+	useEffect(() => {
+		calculateBalance();
+	}, [transactions]);
 
 	useEffect(() => {
 		getUser();
@@ -142,8 +154,15 @@ export default function Home() {
 	useEffect(() => {
 		calculateExpense(transactions);
 		calculateIncome(transactions);
-		calculateBalance(totalIncome, totalExpense);
-	}, [totalIncome, totalExpense, transactions]);
+	}, [transactions]);
+
+	useEffect(() => {
+		let total = 0;
+		transactions.forEach((transactionData) => {
+			total += transactionData.type == "INCOME" ? transactionData.amount : -transactionData.amount;
+		});
+		setTotalBalance(total);
+	}, [transactions]);
 
 	return (
 		<Container
