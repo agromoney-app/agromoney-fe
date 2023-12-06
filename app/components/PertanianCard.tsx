@@ -30,6 +30,27 @@ export default function PertanianCard(props: { yields: Yield }) {
 	const options = { year: "numeric", month: "numeric", day: "numeric" };
 	const readableDate = isoDate.toLocaleDateString("id-ID", options as Intl.DateTimeFormatOptions);
 
+	const [currentDate, setCurrentDate] = useState(getCurrentDate());
+	const [harvestDate, setHarvestDate] = useState(getharvestDate());
+
+	function getCurrentDate() {
+		const date = new Date();
+		const year = date.getFullYear();
+		const month = date.getMonth() + 1;
+		const day = date.getDate();
+
+		return `${year}-${month}-${day}`;
+	}
+
+	function getharvestDate() {
+		const date = new Date(props.yields.harvestTime);
+		const year = date.getFullYear();
+		const month = date.getMonth() + 1;
+		const day = date.getDate();
+
+		return `${year}-${month}-${day}`;
+	}
+
 	const timeDifference = (time: any) => {
 		const currentDateString = new Date().toISOString();
 		const harvestDateString = new Date(time);
@@ -39,7 +60,7 @@ export default function PertanianCard(props: { yields: Yield }) {
 
 		const differenceMs = Math.abs(harvestDate.getTime() - currentDate.getTime());
 		const differenceDays = differenceMs / (1000 * 60 * 60 * 24);
-		return Math.floor(differenceDays);
+		return Math.ceil(differenceDays);
 	};
 
 	const [modalOpen, setModalOpen] = useState(false);
@@ -124,9 +145,7 @@ export default function PertanianCard(props: { yields: Yield }) {
 						<Typography
 							variant="caption"
 							color={
-								timeDifference(props.yields.harvestTime) == 0 ||
-								props.yields.isHarvested ||
-								props.yields.quantity > 0
+								harvestDate <= currentDate || props.yields.isHarvested || props.yields.quantity > 0
 									? "primary"
 									: "warning.main"
 							}
@@ -139,7 +158,7 @@ export default function PertanianCard(props: { yields: Yield }) {
 							<Typography variant="body1" color={"primary"}>
 								{props.yields.quantity} kg
 							</Typography>
-						) : timeDifference(props.yields.harvestTime) > 0 ? (
+						) : harvestDate > currentDate ? (
 							<Button
 								size="small"
 								variant="outlined"
@@ -147,6 +166,19 @@ export default function PertanianCard(props: { yields: Yield }) {
 								color="warning"
 							>
 								{timeDifference(props.yields.harvestTime)} HARI
+							</Button>
+						) : harvestDate < currentDate ? (
+							<Button
+								type="button"
+								size="small"
+								variant="contained"
+								color="primary"
+								onClick={(event: any) => {
+									event.stopPropagation();
+									handleOpenModal();
+								}}
+							>
+								PANEN
 							</Button>
 						) : (
 							<Button

@@ -28,7 +28,7 @@ export default function Home() {
 				Selamat Datang
 			</Typography>
 			<Typography variant="body1" component="p" sx={{ mt: 2, textAlign: "center" }}>
-				Di AgroMoney, Kami membantu anda mengubah lahan menjadi kesuksesan
+				Di Growink, Kami membantu anda mengubah lahan menjadi kesuksesan
 			</Typography>
 			<Button
 				variant="contained"
