@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	images: {
+		domains: ["openweathermap.org"],
+	},
 	reactStrictMode: true,
 	env: {
 		NEXT_PUBLIC_SERVICE_BASE: process.env.NEXT_PUBLIC_SERVICE_BASE,
